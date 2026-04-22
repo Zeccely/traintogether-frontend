@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import PageFooter from "./../components/page-footer";
+import PageHeader from "./../components/page-header";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
@@ -27,7 +29,11 @@ export default function RootLayout({
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col">
+        <PageHeader/>
+          <main className="flex-1 overflow-auto bg-background p-6">{children}</main>
+        <PageFooter/>
+      </body>
     </html>
   );
 }
