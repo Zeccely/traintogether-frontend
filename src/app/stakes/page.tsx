@@ -1,7 +1,3 @@
 export default function StakesPage() {
-  return (
-    <div>
-      Stakes page
-    </div>
-  );
+  return <div>Stakes page</div>;
 }

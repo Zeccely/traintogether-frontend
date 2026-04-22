@@ -1,7 +1,3 @@
 export default function GoalsPage() {
-  return (
-    <div>
-      Goals page
-    </div>
-  );
+  return <div>Goals page</div>;
 }
