@@ -7,8 +7,8 @@ export interface CreateGoalInput {
 }
 
 export interface Goal {
+  userId: number;
   title: string;
   description?: string;
   frequencyTarget: number;
-  progress: GoalProgress;
 }

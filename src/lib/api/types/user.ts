@@ -10,3 +10,9 @@ export interface User {
   groupId: number;
   penalties: UserPenalty[];
 }
+
+export interface UserCreation {
+  username: string;
+  passwordInput: string;
+  desiredname: string;
+}
