@@ -1,20 +1,22 @@
 FROM node:20-slim AS base
-
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
 RUN corepack enable
-
-FROM base AS prod
-
-COPY pnpm-lock.yaml /app
-WORKDIR /app
-RUN pnpm fetch --prod
-
 COPY . /app
+WORKDIR /app
+
+FROM base AS prod-deps
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --prod --frozen-lockfile
+
+FROM base AS build
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
 RUN pnpm run build
 
 FROM base
-COPY --from=prod /app/node_modules /app/node_modules
-COPY --from=prod /app/dist /app/dist
-EXPOSE 8000
+COPY --from=prod-deps /app/node_modules /app/node_modules
+COPY --from=build /app/.next /app/.next
+COPY --from=build /app/public /app/public
+COPY --from=build /app/package.json /app/package.json
+
+EXPOSE 3000
 CMD [ "pnpm", "start" ]
