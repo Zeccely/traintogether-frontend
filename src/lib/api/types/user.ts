@@ -5,7 +5,7 @@ export interface User {
   id: number;
   username: string;
   name: string;
-  passwordhash: string;
+  passwordHash: string;
   goal: Goal;
   groupId: number;
   penalties: UserPenalty[];
@@ -14,5 +14,5 @@ export interface User {
 export interface UserCreation {
   username: string;
   passwordInput: string;
-  desiredname: string;
+  desiredName: string;
 }
