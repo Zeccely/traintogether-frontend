@@ -3,11 +3,19 @@
 import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { login } from "@/lib/api/auth";
+import { LoginInput } from "@/lib/types/user";
 
 export default function LoginForm() {
-  const { register, handleSubmit } = useForm();
-  const onSubmit = (data: any) => {
-    console.log(data);
+  const { register, handleSubmit } = useForm<LoginInput>();
+
+  const onSubmit = async (data: LoginInput) => {
+    try {
+      await login(data);
+      console.log("Logged in!");
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -15,8 +23,7 @@ export default function LoginForm() {
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-2">
         <h2 className="text-center">Log In</h2>
         <Input placeholder="Username" {...register("username")} />
-        <Input placeholder="Password" {...register("passwordinput")} />
-        <link></link>
+        <Input placeholder="Password" type="password" {...register("passwordInput")} />
 
         <Button type="submit"> Log in </Button>
       </form>

@@ -16,3 +16,8 @@ export interface UserCreation {
   passwordInput: string;
   desiredName: string;
 }
+
+export interface LoginInput {
+  username: string;
+  passwordInput: string;
+}

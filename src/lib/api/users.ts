@@ -1,4 +1,4 @@
-import { User, UserCreation } from "./types/user";
+import { User, UserCreation } from "../types/user";
 
 export async function createUser(input: UserCreation): Promise<User> {
   const res = await fetch(`http://localhost:8080/api/users`, {
