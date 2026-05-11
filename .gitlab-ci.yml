@@ -12,9 +12,11 @@ build:
   script:
     - pnpm install --frozen-lockfile
     - pnpm run build
-  cache:
-    key:
-      files:
-        - pnpm-lock.yaml
-    paths:
-      - .pnpm-store/
+
+    # MOST EVIL SUGGESTION BY AI, IT DOES NOT WORK
+    #   cache:
+    # key:
+    #   files:
+    #     - pnpm-lock.yaml
+    # paths:
+    #   - .pnpm-store/
