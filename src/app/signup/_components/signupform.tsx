@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { createUser } from "./../../../lib/api/users";
 import { UserCreation } from "@/lib/types/user";
 
@@ -38,14 +39,20 @@ export default function SignUpForm() {
 
   return (
     <div className="max-w-md mx-auto mt-10">
-      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-2">
-        <h2 className="text-center">Log In</h2>
-        <Input placeholder="Username" {...register("username")} />
-        <Input placeholder="Password" type="password" {...register("passwordInput")} />
-        <Input placeholder="What do you want to be called?" {...register("desiredName")} />
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-center">Sign Up</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-2">
+            <Input placeholder="Username" {...register("username")} />
+            <Input placeholder="Password" type="password" {...register("passwordInput")} />
+            <Input placeholder="What do you want to be called?" {...register("desiredName")} />
 
-        <Button type="submit"> Sign Up </Button>
-      </form>
+            <Button type="submit"> Sign Up </Button>
+          </form>
+        </CardContent>
+      </Card>
     </div>
   );
 }

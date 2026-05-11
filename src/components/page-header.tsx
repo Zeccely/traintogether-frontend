@@ -4,7 +4,7 @@ export default function PageHeader() {
   return (
     <header className="flex items-center justify-between">
       <div className="flex">
-        <Link href="/"> Super Cool TT Logo </Link>
+        <Link href="/dashboard"> Super Cool TT Logo </Link>
       </div>
 
       <div className="flex items-center gap-2">
