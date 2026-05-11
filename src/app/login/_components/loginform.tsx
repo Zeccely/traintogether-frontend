@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -8,11 +9,12 @@ import { LoginInput } from "@/lib/types/user";
 
 export default function LoginForm() {
   const { register, handleSubmit } = useForm<LoginInput>();
-
+  const router = useRouter();
   const onSubmit = async (data: LoginInput) => {
     try {
       await login(data);
       console.log("Logged in!");
+      router.push("/dashboard");
     } catch (error) {
       console.log(error);
     }
