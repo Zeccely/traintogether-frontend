@@ -1,0 +1,15 @@
+variables:
+  GRADLE_OPTS: "-Dorg.gradle.daemon=false"
+
+stages:
+  - build
+
+build:
+  stage: build
+  image: node:22
+  before_script:
+    - corepack enable
+    - corepack prepare pnpm@latest --activate
+  script:
+    - pnpm install --frozen-lockfile
+    - pnpm run build
