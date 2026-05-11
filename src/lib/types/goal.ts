@@ -1,6 +1,5 @@
-import { GoalProgress } from "./goalProgress";
-
-export interface CreateGoalInput {
+export interface GoalCreation {
+  userId: number;
   title: string;
   description?: string;
   frequencyTarget: number;
