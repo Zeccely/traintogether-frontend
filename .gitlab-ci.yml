@@ -3,11 +3,6 @@ stages:
 
 build:
   stage: build
-  before_script:
-    - git config --global core.longpaths true
-    - npm install --global corepack@latest
-    - corepack enable
-    - corepack prepare pnpm@latest --activate
   script:
     - pnpm install --frozen-lockfile
     - pnpm run build
