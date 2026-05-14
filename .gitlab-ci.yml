@@ -10,6 +10,6 @@ build:
 publish:
   stage: publish
   script:
-    - docker login -u "$DOCKERHUB_USERNAME" -p "$DOCKERHUB_PATTOKEN"
+    - echo "$DOCKERHUB_PATTOKEN" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
     - docker build -t zeccely/traintogether-frontend:latest .
     - docker push zeccely/traintogether-frontend:latest
