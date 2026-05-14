@@ -3,10 +3,6 @@ stages:
 
 build:
   stage: build
-  before_script:
-    - export NVM_DIR="$HOME/.nvm"
-    - '[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"'
-    - nvm use 24
   script:
     - pnpm install --frozen-lockfile
     - pnpm run build
