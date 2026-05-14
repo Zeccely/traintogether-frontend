@@ -5,7 +5,7 @@ build:
   stage: build
   before_script:
     - git config --global core.longpaths true
-    - pnpm install --global corepack@latest
+    - npm install --global corepack@latest
     - corepack enable
     - corepack prepare pnpm@latest --activate
   script:
