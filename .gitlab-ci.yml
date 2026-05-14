@@ -6,3 +6,9 @@ build:
   script:
     - pnpm install --frozen-lockfile
     - pnpm run build
+publish:
+  stage: publish
+  script:
+    - docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
+    - docker build -t zeccely/traintogether-frontend:latest .
+    - docker push zeccely/traintogether-frontend:latest
