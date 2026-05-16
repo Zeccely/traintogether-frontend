@@ -12,3 +12,16 @@ export async function login(input: LoginInput): Promise<void> {
     throw new Error("Failed to login");
   }
 }
+
+export async function getCurrentUser(): Promise<String> {
+  const response = await fetch("http://localhost:8080/api/auth/me", {
+    method: "GET",
+    credentials: "include",
+  });
+
+  if (!response.ok) {
+    throw new Error("Not logged in");
+  }
+
+  return response.text();
+}
