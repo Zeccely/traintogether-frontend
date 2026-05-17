@@ -11,6 +11,11 @@ export interface User {
   penalties: UserPenalty[];
 }
 
+export interface UserDetails {
+  username: string;
+  name: string;
+}
+
 export interface UserCreation {
   username: string;
   passwordInput: string;

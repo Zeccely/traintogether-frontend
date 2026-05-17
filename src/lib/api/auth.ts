@@ -13,7 +13,7 @@ export async function login(input: LoginInput): Promise<void> {
   }
 }
 
-export async function getCurrentUser(): Promise<String> {
+export async function getCurrentUser(): Promise<string> {
   const response = await fetch("http://localhost:8080/api/auth/me", {
     method: "GET",
     credentials: "include",
@@ -24,4 +24,16 @@ export async function getCurrentUser(): Promise<String> {
   }
 
   return response.text();
+}
+
+export async function isAuthenticated(cookieHeader: string): Promise<boolean> {
+  const response = await fetch("http://localhost:8080/api/auth/me", {
+    method: "GET",
+    headers: {
+      Cookie: cookieHeader,
+    },
+    cache: "no-store",
+  });
+
+  return response.ok;
 }

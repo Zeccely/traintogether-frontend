@@ -5,13 +5,19 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { GoalCreation } from "@/lib/types/goal";
-
-type GoalFormInput = Omit<GoalCreation, "userId">;
+import { createGoal } from "@/lib/api/goals";
+import { useRouter } from "next/navigation";
 
 export default function GoalForm() {
-  const { register, handleSubmit } = useForm<GoalFormInput>();
-  const onSubmit = (data: GoalFormInput) => {
-    console.log(data);
+  const router = useRouter();
+  const { register, handleSubmit } = useForm<GoalCreation>();
+  const onSubmit = async (data: GoalCreation) => {
+    try {
+      const createdGoal = await createGoal(data);
+      router.replace("/dashboard");
+    } catch (error) {
+      console.error("Error creating goal:", error);
+    }
   };
 
   return (

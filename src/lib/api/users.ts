@@ -1,4 +1,4 @@
-import { User, UserCreation } from "../types/user";
+import { User, UserCreation, UserDetails } from "../types/user";
 
 export async function createUser(input: UserCreation): Promise<User> {
   const res = await fetch(`http://localhost:8080/api/users`, {
@@ -12,4 +12,17 @@ export async function createUser(input: UserCreation): Promise<User> {
   }
 
   return res.json();
+}
+
+export async function getCurrentUserDetails(): Promise<UserDetails> {
+  const response = await fetch("http://localhost:8080/api/users/me", {
+    method: "GET",
+    credentials: "include",
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to fetch user details");
+  }
+
+  return response.json();
 }
