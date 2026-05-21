@@ -37,3 +37,4 @@ export async function isAuthenticated(cookieHeader: string): Promise<boolean> {
 
   return response.ok;
 }
+//this feels wrong

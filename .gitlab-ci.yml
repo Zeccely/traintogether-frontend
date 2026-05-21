@@ -1,15 +1,26 @@
 stages:
   - build
   - publish
+  - deploy
 
 build:
   stage: build
   script:
     - pnpm install --frozen-lockfile
     - pnpm run build
+
 publish:
   stage: publish
   script:
     - echo "$DOCKERHUB_PATTOKEN" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
     - docker build -t zeccely/traintogether-frontend:latest .
     - docker push zeccely/traintogether-frontend:latest
+
+deploy:
+  stage: deploy
+  script:
+    - cd ~/traintogether-deploy
+    - docker compose pull
+    - docker compose up -d
+  only:
+    - main
