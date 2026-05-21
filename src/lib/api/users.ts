@@ -1,7 +1,7 @@
 import { User, UserCreation, UserDetails } from "../types/user";
 
 export async function createUser(input: UserCreation): Promise<User> {
-  const res = await fetch(`http://localhost:8080/api/users`, {
+  const res = await fetch("/api/users", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(input),
@@ -15,7 +15,7 @@ export async function createUser(input: UserCreation): Promise<User> {
 }
 
 export async function getCurrentUserDetails(): Promise<UserDetails> {
-  const response = await fetch("http://localhost:8080/api/users/me", {
+  const response = await fetch("/api/users/me", {
     method: "GET",
     credentials: "include",
   });

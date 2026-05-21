@@ -1,7 +1,7 @@
 import { LoginInput } from "../types/user";
 
 export async function login(input: LoginInput): Promise<void> {
-  const res = await fetch("http://localhost:8080/api/auth/login", {
+  const res = await fetch("/api/auth/login", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(input),
@@ -14,7 +14,7 @@ export async function login(input: LoginInput): Promise<void> {
 }
 
 export async function getCurrentUser(): Promise<string> {
-  const response = await fetch("http://localhost:8080/api/auth/me", {
+  const response = await fetch("/api/auth/me", {
     method: "GET",
     credentials: "include",
   });
@@ -27,7 +27,7 @@ export async function getCurrentUser(): Promise<string> {
 }
 
 export async function isAuthenticated(cookieHeader: string): Promise<boolean> {
-  const response = await fetch("http://localhost:8080/api/auth/me", {
+  const response = await fetch("/api/auth/me", {
     method: "GET",
     headers: {
       Cookie: cookieHeader,

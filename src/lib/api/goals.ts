@@ -1,7 +1,7 @@
 import { Goal, GoalCreation } from "@/lib/types/goal";
 
 export async function createGoal(input: GoalCreation): Promise<Goal> {
-  const response = await fetch("http://localhost:8080/api/goals", {
+  const response = await fetch("/api/goals", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -18,7 +18,7 @@ export async function createGoal(input: GoalCreation): Promise<Goal> {
 }
 
 export async function getGoals(): Promise<Goal[]> {
-  const response = await fetch("http://localhost:8080/api/goals", {
+  const response = await fetch("/api/goals", {
     method: "GET",
     credentials: "include",
   });
@@ -31,7 +31,7 @@ export async function getGoals(): Promise<Goal[]> {
 }
 
 export async function getMyGoal(): Promise<Goal | null> {
-  const response = await fetch("http://localhost:8080/api/goals/my-goal", {
+  const response = await fetch("/api/goals/my-goal", {
     method: "GET",
     credentials: "include",
   });
