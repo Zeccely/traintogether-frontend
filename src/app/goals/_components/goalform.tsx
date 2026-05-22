@@ -24,7 +24,7 @@ export default function GoalForm() {
     <div className="max-w-md mx-auto mt-10">
       <Card>
         <CardHeader>
-          <CardTitle className="text-center">Make a Goal!</CardTitle>
+          <CardTitle className="text-center">Make a Goal to Achieve!</CardTitle>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-2">
