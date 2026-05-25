@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { login } from "@/lib/api/auth";
+import { login } from "@/lib/auth/auth";
 import { LoginInput } from "@/lib/types/user";
 import { useState } from "react";
 

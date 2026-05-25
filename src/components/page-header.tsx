@@ -11,32 +11,34 @@ export default async function PageHeader() {
         <Link href="/dashboard"> Super Cool TT Logo </Link>
       </div>
 
-      <div className="flex items-center gap-2">
-        <Link
-          href="/groups"
-          className="flex items-center gap-2 border border-white/10 bg-white/5 p-1"
-        >
-          Groups
-        </Link>
-        <Link
-          href="/goals"
-          className="flex items-center gap-2 border border-white/10 bg-white/5 p-1"
-        >
-          Goals
-        </Link>
-        <Link
-          href="/stakes"
-          className="flex items-center gap-2 border border-white/10 bg-white/5 p-1"
-        >
-          Stakes
-        </Link>
-        <Link
-          href="/profile"
-          className="flex items-center gap-2 border border-white/10 bg-white/5 p-1"
-        >
-          Profile
-        </Link>
-      </div>
+      {isLoggedIn && (
+        <div className="flex items-center gap-2">
+          <Link
+            href="/groups"
+            className="flex items-center gap-2 border border-white/10 bg-white/5 p-1"
+          >
+            Groups
+          </Link>
+          <Link
+            href="/goals"
+            className="flex items-center gap-2 border border-white/10 bg-white/5 p-1"
+          >
+            Goals
+          </Link>
+          <Link
+            href="/stakes"
+            className="flex items-center gap-2 border border-white/10 bg-white/5 p-1"
+          >
+            Stakes
+          </Link>
+          <Link
+            href="/profile"
+            className="flex items-center gap-2 border border-white/10 bg-white/5 p-1"
+          >
+            Profile
+          </Link>
+        </div>
+      )}
 
       <div className="flex items-center gap-2">
         <HeaderAuthActions isLoggedIn={isLoggedIn} />

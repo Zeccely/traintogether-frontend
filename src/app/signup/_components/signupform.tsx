@@ -16,8 +16,10 @@ import { UserCreation } from "@/lib/types/user";
 
 export default function SignUpForm() {
   const [submittedUser, setSubmittedUser] = useState<UserCreation | null>(null);
+  const [message, setMessage] = useState<string | null>(null);
   const { register, handleSubmit } = useForm<UserCreation>();
   const onSubmit = (data: UserCreation) => {
+    setMessage(null);
     setSubmittedUser(data);
   };
 
@@ -28,9 +30,11 @@ export default function SignUpForm() {
     const userToSubmit = submittedUser;
     async function submitUser() {
       try {
-        const createdUser = await createUser(userToSubmit); //this created user becomes the object the backend sent back!
+        await createUser(userToSubmit);
+        setMessage("User created!");
       } catch (error) {
         console.log(error);
+        setMessage("Could not create user");
       }
     }
 
@@ -48,6 +52,8 @@ export default function SignUpForm() {
             <Input placeholder="Username" {...register("username")} />
             <Input placeholder="Password" type="password" {...register("passwordInput")} />
             <Input placeholder="What do you want to be called?" {...register("desiredName")} />
+
+            {message && <p className="text-sm">{message}</p>}
 
             <Button type="submit"> Sign Up </Button>
           </form>

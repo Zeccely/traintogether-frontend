@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { logout } from "@/lib/api/auth";
+import { logout } from "@/lib/auth/auth";
 
 type HeaderAuthActionsProps = {
   isLoggedIn: boolean;

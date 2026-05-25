@@ -43,7 +43,6 @@ export async function isAuthenticated(cookieHeader: string): Promise<boolean> {
 
   return response.ok;
 }
-//this feels wrong
 
 export async function logout(): Promise<void> {
   const response = await fetch("/api/auth/logout", {
