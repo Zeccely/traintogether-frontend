@@ -27,7 +27,13 @@ export async function getCurrentUser(): Promise<string> {
 }
 
 export async function isAuthenticated(cookieHeader: string): Promise<boolean> {
-  const response = await fetch("/api/auth/me", {
+  const appUrl = process.env.APP_URL;
+
+  if (!appUrl) {
+    throw new Error("APP_URL is not configured");
+  }
+
+  const response = await fetch(`${appUrl.replace(/\/$/, "")}/api/auth/me`, {
     method: "GET",
     headers: {
       Cookie: cookieHeader,
