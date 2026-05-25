@@ -1,6 +1,10 @@
 import Link from "next/link";
+import { cookies } from "next/headers";
+import HeaderAuthActions from "./header-auth-actions";
 
-export default function PageHeader() {
+export default async function PageHeader() {
+  const isLoggedIn = (await cookies()).has("ACCESS");
+
   return (
     <header className="flex items-center justify-between">
       <div className="flex">
@@ -35,20 +39,7 @@ export default function PageHeader() {
       </div>
 
       <div className="flex items-center gap-2">
-        <Link
-          href="/login"
-          className="flex items-center gap-2 rounded-full border border-white/10 bg-white/5 p-1"
-        >
-          {" "}
-          Login{" "}
-        </Link>
-        <Link
-          href="/signup"
-          className="flex items-center gap-2 rounded-full border border-white/10 bg-white/5 p-1"
-        >
-          {" "}
-          Sign Up
-        </Link>
+        <HeaderAuthActions isLoggedIn={isLoggedIn} />
       </div>
     </header>
   );
