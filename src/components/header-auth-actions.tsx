@@ -41,17 +41,14 @@ export default function HeaderAuthActions({ isLoggedIn }: HeaderAuthActionsProps
 
   return (
     <>
-      <Link
-        href="/login"
-        className="flex items-center gap-2 rounded-full border border-white/10 bg-white/5 p-1"
-      >
-        Login
+      <Link href="/signup" className="flex h-10 items-center px-1 text-sm md:h-12 md:text-base">
+        Sign Up
       </Link>
       <Link
-        href="/signup"
-        className="flex items-center gap-2 rounded-full border border-white/10 bg-white/5 p-1"
+        href="/login"
+        className="flex h-10 items-center rounded-full bg-primary px-5 text-sm text-primary-foreground md:h-12 md:px-8 md:text-base"
       >
-        Sign Up
+        Login
       </Link>
     </>
   );
