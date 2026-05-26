@@ -38,7 +38,7 @@ export default async function PageHeader() {
       </div>
 
       <div className="flex items-center gap-2">
-        <HeaderAuthActions isLoggedIn={isLoggedIn} />
+        <HeaderAuthActions key={isLoggedIn ? "logged-in" : "logged-out"} isLoggedIn={isLoggedIn} />
       </div>
     </header>
   );
