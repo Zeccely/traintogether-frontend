@@ -46,7 +46,7 @@ export default function HeaderAuthActions({ isLoggedIn }: HeaderAuthActionsProps
       </Link>
       <Link
         href="/login"
-        className="flex h-10 items-center rounded-full bg-primary px-5 text-sm text-primary-foreground md:h-12 md:px-8 md:text-base"
+        className="flex items-center rounded-full bg-primary px-5 py-2 text-sm text-primary-foreground md:text-base"
       >
         Login
       </Link>
