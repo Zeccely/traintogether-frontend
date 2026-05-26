@@ -7,6 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { createGroup, getMyGroup } from "@/lib/api/groups";
 import { GroupCreation, GroupDTO } from "@/lib/types/group";
+import GroupJoinCard from "./groupJoinCard";
 
 export default function GroupCard() {
   const {
@@ -61,20 +62,24 @@ export default function GroupCard() {
   }
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Create a group</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-2">
-          <Input
-            placeholder="Group name"
-            aria-invalid={Boolean(errors.groupName)}
-            {...register("groupName", { required: true })}
-          />
-          <Button type="submit">Create group</Button>
-        </form>
-      </CardContent>
-    </Card>
+    <div className="grid gap-4 md:grid-cols-2">
+      <Card>
+        <CardHeader>
+          <CardTitle>Create a group</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-2">
+            <Input
+              placeholder="Group name"
+              aria-invalid={Boolean(errors.groupName)}
+              {...register("groupName", { required: true })}
+            />
+            <Button type="submit">Create group</Button>
+          </form>
+        </CardContent>
+      </Card>
+
+      <GroupJoinCard onJoined={setMyGroup} />
+    </div>
   );
 }
