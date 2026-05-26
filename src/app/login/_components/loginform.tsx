@@ -19,6 +19,7 @@ export default function LoginForm() {
       setLoginError(null);
       await login(data);
       router.replace("/dashboard");
+      router.refresh();
     } catch (error) {
       console.error(error);
       setLoginError("Login failed. Check your username and password.");
