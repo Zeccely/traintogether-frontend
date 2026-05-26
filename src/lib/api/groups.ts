@@ -1,4 +1,4 @@
-import { GroupCreation, GroupDTO } from "@/lib/types/group";
+import { GroupCreation, GroupDTO, GroupUserDTO } from "@/lib/types/group";
 
 export async function createGroup(input: GroupCreation): Promise<GroupDTO> {
   const response = await fetch("/api/groups", {
@@ -29,6 +29,32 @@ export async function getMyGroup(): Promise<GroupDTO | null> {
 
   if (!response.ok) {
     throw new Error("Failed to get group");
+  }
+
+  return response.json();
+}
+
+export async function joinGroup(groupId: number): Promise<GroupDTO> {
+  const response = await fetch(`/api/groups/${groupId}/join`, {
+    method: "POST",
+    credentials: "include",
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to join group");
+  }
+
+  return response.json();
+}
+
+export async function getMyGroupUsers(): Promise<GroupUserDTO[]> {
+  const response = await fetch("/api/groups/my-group/users", {
+    method: "GET",
+    credentials: "include",
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to get group users");
   }
 
   return response.json();
