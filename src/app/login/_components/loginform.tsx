@@ -10,7 +10,11 @@ import { LoginInput } from "@/lib/types/user";
 import { useState } from "react";
 
 export default function LoginForm() {
-  const { register, handleSubmit } = useForm<LoginInput>();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<LoginInput>();
   const router = useRouter();
   const [loginError, setLoginError] = useState<string | null>(null);
 
@@ -35,8 +39,17 @@ export default function LoginForm() {
 
         <CardContent>
           <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-2">
-            <Input placeholder="Username" {...register("username")} />
-            <Input placeholder="Password" type="password" {...register("passwordInput")} />
+            <Input
+              placeholder="Username"
+              aria-invalid={Boolean(errors.username)}
+              {...register("username", { required: true })}
+            />
+            <Input
+              placeholder="Password"
+              type="password"
+              aria-invalid={Boolean(errors.passwordInput)}
+              {...register("passwordInput", { required: true })}
+            />
 
             {loginError && <p className="text-sm text-red-500">{loginError}</p>}
 

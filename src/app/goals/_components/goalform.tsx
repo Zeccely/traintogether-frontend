@@ -10,10 +10,14 @@ import { useRouter } from "next/navigation";
 
 export default function GoalForm() {
   const router = useRouter();
-  const { register, handleSubmit } = useForm<GoalCreation>();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<GoalCreation>();
   const onSubmit = async (data: GoalCreation) => {
     try {
-      const createdGoal = await createGoal(data);
+      await createGoal(data);
       router.replace("/dashboard");
     } catch (error) {
       console.error("Error creating goal:", error);
@@ -28,12 +32,21 @@ export default function GoalForm() {
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-2">
-            <Input placeholder="Title" {...register("title")} />
-            <Input placeholder="Description" {...register("description")} />
+            <Input
+              placeholder="Title"
+              aria-invalid={Boolean(errors.title)}
+              {...register("title", { required: true })}
+            />
+            <Input
+              placeholder="Description"
+              aria-invalid={Boolean(errors.description)}
+              {...register("description", { required: true })}
+            />
             <Input
               placeholder="Frequency Target"
               type="number"
-              {...register("frequencyTarget", { valueAsNumber: true })}
+              aria-invalid={Boolean(errors.frequencyTarget)}
+              {...register("frequencyTarget", { required: true, valueAsNumber: true })}
             />
             <Button type="submit"> Create Goal </Button>
           </form>

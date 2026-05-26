@@ -17,7 +17,11 @@ import { UserCreation } from "@/lib/types/user";
 export default function SignUpForm() {
   const [submittedUser, setSubmittedUser] = useState<UserCreation | null>(null);
   const [message, setMessage] = useState<string | null>(null);
-  const { register, handleSubmit } = useForm<UserCreation>();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<UserCreation>();
   const onSubmit = (data: UserCreation) => {
     setMessage(null);
     setSubmittedUser(data);
@@ -49,9 +53,22 @@ export default function SignUpForm() {
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-2">
-            <Input placeholder="Username" {...register("username")} />
-            <Input placeholder="Password" type="password" {...register("passwordInput")} />
-            <Input placeholder="What do you want to be called?" {...register("desiredName")} />
+            <Input
+              placeholder="Username"
+              aria-invalid={Boolean(errors.username)}
+              {...register("username", { required: true })}
+            />
+            <Input
+              placeholder="Password"
+              type="password"
+              aria-invalid={Boolean(errors.passwordInput)}
+              {...register("passwordInput", { required: true })}
+            />
+            <Input
+              placeholder="What do you want to be called?"
+              aria-invalid={Boolean(errors.desiredName)}
+              {...register("desiredName", { required: true })}
+            />
 
             {message && <p className="text-sm">{message}</p>}
 

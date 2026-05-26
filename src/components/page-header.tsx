@@ -13,7 +13,7 @@ export default async function PageHeader() {
   const isLoggedIn = (await cookies()).has("ACCESS");
 
   return (
-    <header className="flex h-[55px] items-center justify-between border-b border-border bg-background px-6">
+    <header className="flex h-13.75 items-center justify-between border-b border-border bg-background px-6">
       <div className="flex min-w-0 flex-1">
         <Link href="/dashboard"> Super Cool TT Logo </Link>
       </div>
@@ -23,7 +23,7 @@ export default async function PageHeader() {
           <Link
             key={link.href}
             href={link.href}
-            className="flex h-[74px] items-center border-b-2 border-transparent px-1"
+            className="flex h-18.5 items-center border-b-2 border-transparent px-1"
           >
             {link.label}
           </Link>

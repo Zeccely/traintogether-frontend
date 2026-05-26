@@ -1,7 +1,8 @@
 import { requireAuth } from "@/lib/auth/require-auth";
+import GroupCard from "./_components/groupCard";
 
 export default async function GroupsPage() {
   await requireAuth();
 
-  return <div>Groups page</div>;
+  return <GroupCard />;
 }
