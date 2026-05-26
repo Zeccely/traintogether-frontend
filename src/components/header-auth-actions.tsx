@@ -32,7 +32,7 @@ export default function HeaderAuthActions({ isLoggedIn }: HeaderAuthActionsProps
         type="button"
         onClick={handleLogout}
         disabled={isLoggingOut}
-        className="flex cursor-pointer items-center gap-2 rounded-full border border-white/10 bg-white/5 p-1 disabled:cursor-not-allowed disabled:opacity-60"
+        className="h-auto cursor-pointer rounded-full bg-primary px-5 py-2 text-sm text-primary-foreground md:text-base disabled:cursor-not-allowed disabled:opacity-60"
       >
         {isLoggingOut ? "Logging out..." : "Logout"}
       </Button>
