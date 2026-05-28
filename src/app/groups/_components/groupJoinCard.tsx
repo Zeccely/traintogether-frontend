@@ -57,10 +57,6 @@ export default function GroupJoinCard({ onJoined }: GroupJoinCardProps) {
         <CardTitle>Join a group</CardTitle>
       </CardHeader>
       <CardContent>
-        {errorMessage ? (
-          <p className="text-sm text-red-400">{errorMessage}</p>
-        ) : null}
-
         <div className="flex flex-col gap-2">
           {loadingGroups ? <p className="text-sm text-muted-foreground">Loading groups...</p> : null}
 
@@ -75,7 +71,6 @@ export default function GroupJoinCard({ onJoined }: GroupJoinCardProps) {
             >
               <div className="min-w-0">
                 <p className="truncate font-medium">{group.groupName}</p>
-                <p className="text-sm text-muted-foreground">ID: {group.id}</p>
               </div>
               <Button type="button" onClick={() => handleJoin(group.id)}>
                 Join
@@ -83,6 +78,10 @@ export default function GroupJoinCard({ onJoined }: GroupJoinCardProps) {
             </div>
           ))}
         </div>
+
+        {errorMessage ? (
+          <p className="mt-3 text-sm text-red-400">{errorMessage}</p>
+        ) : null}
       </CardContent>
     </Card>
   );
