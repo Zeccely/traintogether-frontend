@@ -11,7 +11,7 @@ export async function createGroup(input: GroupCreation): Promise<GroupDTO> {
   });
 
   if (!response.ok) {
-    throw new Error("Failed to create group");
+    throw new Error(await response.text());
   }
 
   return response.json();
@@ -28,7 +28,20 @@ export async function getMyGroup(): Promise<GroupDTO | null> {
   }
 
   if (!response.ok) {
-    throw new Error("Failed to get group");
+    throw new Error(await response.text());
+  }
+
+  return response.json();
+}
+
+export async function getGroups(): Promise<GroupDTO[]> {
+  const response = await fetch("/api/groups", {
+    method: "GET",
+    credentials: "include",
+  });
+
+  if (!response.ok) {
+    throw new Error(await response.text());
   }
 
   return response.json();
@@ -41,7 +54,7 @@ export async function joinGroup(groupId: number): Promise<GroupDTO> {
   });
 
   if (!response.ok) {
-    throw new Error("Failed to join group");
+    throw new Error(await response.text());
   }
 
   return response.json();

@@ -1,23 +1,18 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { createGroup, getMyGroup } from "@/lib/api/groups";
-import { GroupCreation, GroupDTO } from "@/lib/types/group";
+import { getMyGroup } from "@/lib/api/groups";
+import { GroupDTO } from "@/lib/types/group";
+import GroupCreateCard from "./groupCreateCard";
 import GroupJoinCard from "./groupJoinCard";
+import MyGroupCard from "./myGroupCard";
 
 export default function GroupCard() {
-  const {
-    register,
-    handleSubmit,
-    reset,
-    formState: { errors },
-  } = useForm<GroupCreation>();
   const [loading, setLoading] = useState(true);
   const [myGroup, setMyGroup] = useState<GroupDTO | null>(null);
+  const [loadErrorMessage, setLoadErrorMessage] = useState<string | null>(null);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   useEffect(() => {
     checkMyGroup();
@@ -26,22 +21,24 @@ export default function GroupCard() {
   async function checkMyGroup() {
     try {
       setLoading(true);
+      setLoadErrorMessage(null);
+      setErrorMessage(null);
       setMyGroup(await getMyGroup());
     } catch (error) {
       console.error(error);
+      setLoadErrorMessage(
+        error instanceof Error && error.message
+          ? error.message
+          : "Could not load your group. Please try again.",
+      );
     } finally {
       setLoading(false);
     }
   }
 
-  async function onSubmit(data: GroupCreation) {
-    try {
-      const createdGroup = await createGroup(data);
-      setMyGroup(createdGroup);
-      reset();
-    } catch (error) {
-      console.error(error);
-    }
+  function handleGroupChanged(group: GroupDTO) {
+    setMyGroup(group);
+    setErrorMessage(null);
   }
 
   if (loading) {
@@ -49,13 +46,17 @@ export default function GroupCard() {
   }
 
   if (myGroup) {
+    return <MyGroupCard group={myGroup} />;
+  }
+
+  if (loadErrorMessage) {
     return (
       <Card>
         <CardHeader>
-          <CardTitle>{myGroup.groupName}</CardTitle>
+          <CardTitle>Group</CardTitle>
         </CardHeader>
         <CardContent>
-          <p>Group ID: {myGroup.id}</p>
+          <p className="text-sm text-red-400">{loadErrorMessage}</p>
         </CardContent>
       </Card>
     );
@@ -63,23 +64,12 @@ export default function GroupCard() {
 
   return (
     <div className="grid gap-4 md:grid-cols-2">
-      <Card>
-        <CardHeader>
-          <CardTitle>Create a group</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-2">
-            <Input
-              placeholder="Group name"
-              aria-invalid={Boolean(errors.groupName)}
-              {...register("groupName", { required: true })}
-            />
-            <Button type="submit">Create group</Button>
-          </form>
-        </CardContent>
-      </Card>
+      {errorMessage ? (
+        <p className="md:col-span-2 text-sm text-red-400">{errorMessage}</p>
+      ) : null}
 
-      <GroupJoinCard onJoined={setMyGroup} />
+      <GroupCreateCard onCreated={handleGroupChanged} onError={setErrorMessage} />
+      <GroupJoinCard onJoined={handleGroupChanged} />
     </div>
   );
 }
