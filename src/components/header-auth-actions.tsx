@@ -34,7 +34,7 @@ export default function HeaderAuthActions({ isLoggedIn }: HeaderAuthActionsProps
         disabled={isLoggingOut}
         className="h-auto cursor-pointer rounded-full bg-primary px-5 py-2 text-sm text-primary-foreground md:text-base disabled:cursor-not-allowed disabled:opacity-60"
       >
-        {isLoggingOut ? "Logging out..." : "Logout"}
+        Logout
       </Button>
     );
   }

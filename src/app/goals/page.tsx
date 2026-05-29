@@ -1,12 +1,12 @@
 import { requireAuth } from "@/lib/auth/require-auth";
-import GoalForm from "./_components/goalform";
+import GoalsContent from "./_components/goalsContentPage";
 
 export default async function GoalsPage() {
   await requireAuth();
 
   return (
     <div className="max-w-md mx-auto">
-      <GoalForm />
+      <GoalsContent />
     </div>
   );
 }

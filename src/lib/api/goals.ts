@@ -36,9 +36,24 @@ export async function getMyGoal(): Promise<Goal | null> {
     credentials: "include",
   });
 
+  if (response.status === 404) {
+    return null;
+  }
+
   if (!response.ok) {
     throw new Error("Goal not found");
   }
 
   return await response.json();
+}
+
+export async function deleteMyGoal(): Promise<void> {
+  const response = await fetch("/api/goals/my-goal", {
+    method: "DELETE",
+    credentials: "include",
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to delete goal");
+  }
 }
