@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardAction, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { deleteMyGoal } from "@/lib/api/goals";
 import { Goal } from "@/lib/types/goal";
+import { Trash2 } from "lucide-react";
 
 type MyGoalProps = {
   goal: Goal;
@@ -43,10 +44,11 @@ export default function MyGoal({ goal, onDeleted }: MyGoalProps) {
           <Button
             type="button"
             variant="destructive"
-            size="sm"
+            size="icon-sm"
+            aria-label="Delete goal"
             onClick={() => setIsConfirmingDelete(true)}
           >
-            Delete
+            <Trash2 />
           </Button>
         </CardAction>
       </CardHeader>
