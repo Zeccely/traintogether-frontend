@@ -47,7 +47,7 @@ export default function GroupCard() {
   }
 
   if (myGroup) {
-    return <MyGroupCard group={myGroup} />;
+    return <MyGroupCard group={myGroup} onLeft={() => setMyGroup(null)} />;
   }
 
   if (loadErrorMessage) {

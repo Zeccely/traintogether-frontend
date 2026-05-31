@@ -60,6 +60,17 @@ export async function joinGroup(groupId: number): Promise<GroupDTO> {
   return response.json();
 }
 
+export async function leaveGroup(): Promise<void> {
+  const response = await fetch("/api/groups/my-group", {
+    method: "DELETE",
+    credentials: "include",
+  });
+
+  if (!response.ok) {
+    throw new Error((await response.text()) || "Failed to leave group");
+  }
+}
+
 export async function getMyGroupUsers(): Promise<GroupUserDTO[]> {
   const response = await fetch("/api/groups/my-group/users", {
     method: "GET",

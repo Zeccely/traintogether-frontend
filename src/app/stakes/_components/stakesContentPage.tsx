@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { Loading } from "@/components/ui/loading";
+import { getMyGroup } from "@/lib/api/groups";
 import { getMyGroupStake } from "@/lib/api/stakes";
 import { StakeDTO } from "@/lib/types/stake";
 import MyStake from "./myStake";
@@ -9,13 +10,16 @@ import StakeForm from "./stakeForm";
 
 export default function StakesContent() {
   const [stake, setStake] = useState<StakeDTO | null>(null);
+  const [groupName, setGroupName] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   useEffect(() => {
     async function loadStake() {
       try {
-        setStake(await getMyGroupStake());
+        const [myStake, myGroup] = await Promise.all([getMyGroupStake(), getMyGroup()]);
+        setStake(myStake);
+        setGroupName(myGroup?.groupName ?? null);
       } catch (error) {
         console.error(error);
         setErrorMessage(
@@ -40,7 +44,7 @@ export default function StakesContent() {
   }
 
   if (stake?.description) {
-    return <MyStake stake={stake} />;
+    return <MyStake stake={stake} groupName={groupName} />;
   }
 
   return <StakeForm onAdded={setStake} />;

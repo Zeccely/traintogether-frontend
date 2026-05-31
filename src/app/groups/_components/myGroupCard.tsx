@@ -1,17 +1,23 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { getMyGroupUsers } from "@/lib/api/groups";
+import { LogOut } from "lucide-react";
+import ConfirmationWindow from "@/components/shared/confirmation-window";
+import { Button } from "@/components/ui/button";
+import { Card, CardAction, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { getMyGroupUsers, leaveGroup } from "@/lib/api/groups";
 import { GroupDTO, GroupUserDTO } from "@/lib/types/group";
 
 type MyGroupCardProps = {
   group: GroupDTO;
+  onLeft: () => void;
 };
 
-export default function MyGroupCard({ group }: MyGroupCardProps) {
+export default function MyGroupCard({ group, onLeft }: MyGroupCardProps) {
   const [teammates, setTeammates] = useState<GroupUserDTO[]>([]);
   const [loadingTeammates, setLoadingTeammates] = useState(true);
+  const [isConfirmingLeave, setIsConfirmingLeave] = useState(false);
+  const [isLeaving, setIsLeaving] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   useEffect(() => {
@@ -33,10 +39,38 @@ export default function MyGroupCard({ group }: MyGroupCardProps) {
     }
   }
 
+  async function handleLeave() {
+    try {
+      setIsLeaving(true);
+      setErrorMessage(null);
+      await leaveGroup();
+      onLeft();
+    } catch (error) {
+      console.error(error);
+      setIsConfirmingLeave(false);
+      setErrorMessage(
+        error instanceof Error && error.message ? error.message : "Could not leave the group.",
+      );
+    } finally {
+      setIsLeaving(false);
+    }
+  }
+
   return (
     <Card>
       <CardHeader>
         <CardTitle>{group.groupName}</CardTitle>
+        <CardAction>
+          <Button
+            type="button"
+            variant="destructive"
+            size="icon-sm"
+            aria-label="Leave group"
+            onClick={() => setIsConfirmingLeave(true)}
+          >
+            <LogOut />
+          </Button>
+        </CardAction>
       </CardHeader>
       <CardContent>
         <div className="flex flex-col gap-2">
@@ -56,6 +90,15 @@ export default function MyGroupCard({ group }: MyGroupCardProps) {
 
         {errorMessage ? <p className="mt-3 text-sm text-red-400">{errorMessage}</p> : null}
       </CardContent>
+      <ConfirmationWindow
+        isOpen={isConfirmingLeave}
+        title="Leave group?"
+        message={`Are you sure you want to leave ${group.groupName}?`}
+        isPending={isLeaving}
+        confirmLabel="Leave"
+        onCancel={() => setIsConfirmingLeave(false)}
+        onConfirm={handleLeave}
+      />
     </Card>
   );
 }
