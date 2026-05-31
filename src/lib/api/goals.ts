@@ -11,7 +11,7 @@ export async function createGoal(input: GoalCreation): Promise<Goal> {
   });
 
   if (!response.ok) {
-    throw new Error("Failed to create goal");
+    throw new Error((await response.text()) || "Failed to create goal");
   }
 
   return response.json();
@@ -54,6 +54,6 @@ export async function deleteMyGoal(): Promise<void> {
   });
 
   if (!response.ok) {
-    throw new Error("Failed to delete goal");
+    throw new Error((await response.text()) || "Failed to delete goal");
   }
 }

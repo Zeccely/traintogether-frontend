@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -10,6 +11,7 @@ import { useRouter } from "next/navigation";
 
 export default function GoalForm() {
   const router = useRouter();
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const {
     register,
     handleSubmit,
@@ -17,10 +19,14 @@ export default function GoalForm() {
   } = useForm<GoalCreation>();
   const onSubmit = async (data: GoalCreation) => {
     try {
+      setErrorMessage(null);
       await createGoal(data);
       router.replace("/dashboard");
     } catch (error) {
       console.error("Error creating goal:", error);
+      setErrorMessage(
+        error instanceof Error && error.message ? error.message : "Could not create your goal.",
+      );
     }
   };
 
@@ -45,9 +51,18 @@ export default function GoalForm() {
             <Input
               placeholder="Frequency Target"
               type="number"
+              min={1}
               aria-invalid={Boolean(errors.frequencyTarget)}
-              {...register("frequencyTarget", { required: true, valueAsNumber: true })}
+              {...register("frequencyTarget", {
+                required: "Frequency target is required.",
+                min: { value: 1, message: "Frequency target must be at least 1." },
+                valueAsNumber: true,
+              })}
             />
+            {errors.frequencyTarget?.message ? (
+              <p className="text-sm text-destructive">{errors.frequencyTarget.message}</p>
+            ) : null}
+            {errorMessage ? <p className="text-sm text-destructive">{errorMessage}</p> : null}
             <Button type="submit"> Create Goal </Button>
           </form>
         </CardContent>

@@ -24,7 +24,12 @@ export default function MyGoal({ goal, onDeleted }: MyGoalProps) {
       onDeleted();
     } catch (error) {
       console.error("Error deleting goal:", error);
-      setErrorMessage("Could not delete your goal. Please try again.");
+      setIsConfirmingDelete(false);
+      setErrorMessage(
+        error instanceof Error && error.message
+          ? error.message
+          : "Could not delete your goal. Please try again.",
+      );
     } finally {
       setIsDeleting(false);
     }
