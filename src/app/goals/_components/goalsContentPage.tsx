@@ -1,11 +1,11 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { Loading } from "@/components/ui/loading";
 import GoalForm from "./goalform";
 import MyGoal from "./myGoal";
 import { getMyGoal } from "@/lib/api/goals";
 import { Goal } from "@/lib/types/goal";
-import { Loading } from "@/components/ui/loading";
 
 export default function GoalsContent() {
   const [goal, setGoal] = useState<Goal | null>(null);

@@ -54,10 +54,6 @@ export default function GroupJoinCard({ onJoined }: GroupJoinCardProps) {
       </CardHeader>
       <CardContent>
         <div className="flex flex-col gap-2">
-          {loadingGroups ? (
-            <p className="text-sm text-muted-foreground">Loading groups...</p>
-          ) : null}
-
           {!loadingGroups && groups.length === 0 ? (
             <p className="text-sm text-muted-foreground">No groups available.</p>
           ) : null}

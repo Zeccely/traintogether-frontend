@@ -26,7 +26,7 @@ export default function GoalsCard() {
 
   let goalContent;
   if (isLoading) {
-    goalContent = <p>Loading goal</p>;
+    goalContent = null;
   } else if (goal) {
     goalContent = (
       <div>

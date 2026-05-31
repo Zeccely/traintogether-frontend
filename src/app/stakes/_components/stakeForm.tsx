@@ -45,16 +45,14 @@ export default function StakeForm({ onAdded }: StakeFormProps) {
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-2">
-          <p className="text-sm text-muted-foreground">
-            Set the stake your group agrees to complete when a goal is missed.
-          </p>
+          <p className="text-sm text-muted-foreground">Raise the stakes and stick to your goals!</p>
           <Input
             placeholder="Stake description"
             aria-invalid={Boolean(errors.description)}
             {...register("description", { required: true })}
           />
           <Button type="submit" disabled={submitting}>
-            {submitting ? "Saving..." : "Save stake"}
+            Save stake
           </Button>
         </form>
 

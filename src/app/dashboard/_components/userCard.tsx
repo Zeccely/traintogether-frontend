@@ -32,7 +32,7 @@ export default function UserCard() {
       </div>
     );
   } else {
-    userContent = <p>Loading user...</p>;
+    userContent = null;
   }
 
   return (

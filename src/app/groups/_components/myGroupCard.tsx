@@ -42,10 +42,6 @@ export default function MyGroupCard({ group }: MyGroupCardProps) {
         <div className="flex flex-col gap-2">
           <h3 className="text-sm font-medium">Teammates</h3>
 
-          {loadingTeammates ? (
-            <p className="text-sm text-muted-foreground">Loading teammates...</p>
-          ) : null}
-
           {!loadingTeammates && teammates.length === 0 ? (
             <p className="text-sm text-muted-foreground">No teammates yet.</p>
           ) : null}
