@@ -27,9 +27,7 @@ export default function GroupJoinCard({ onJoined }: GroupJoinCardProps) {
     } catch (error) {
       console.error(error);
       setErrorMessage(
-        error instanceof Error && error.message
-          ? error.message
-          : "Could not load groups.",
+        error instanceof Error && error.message ? error.message : "Could not load groups.",
       );
     } finally {
       setLoadingGroups(false);
@@ -44,9 +42,7 @@ export default function GroupJoinCard({ onJoined }: GroupJoinCardProps) {
     } catch (error) {
       console.error(error);
       setErrorMessage(
-        error instanceof Error && error.message
-          ? error.message
-          : "Could not join group.",
+        error instanceof Error && error.message ? error.message : "Could not join group.",
       );
     }
   }
@@ -58,7 +54,9 @@ export default function GroupJoinCard({ onJoined }: GroupJoinCardProps) {
       </CardHeader>
       <CardContent>
         <div className="flex flex-col gap-2">
-          {loadingGroups ? <p className="text-sm text-muted-foreground">Loading groups...</p> : null}
+          {loadingGroups ? (
+            <p className="text-sm text-muted-foreground">Loading groups...</p>
+          ) : null}
 
           {!loadingGroups && groups.length === 0 ? (
             <p className="text-sm text-muted-foreground">No groups available.</p>
@@ -79,9 +77,7 @@ export default function GroupJoinCard({ onJoined }: GroupJoinCardProps) {
           ))}
         </div>
 
-        {errorMessage ? (
-          <p className="mt-3 text-sm text-red-400">{errorMessage}</p>
-        ) : null}
+        {errorMessage ? <p className="mt-3 text-sm text-red-400">{errorMessage}</p> : null}
       </CardContent>
     </Card>
   );

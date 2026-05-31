@@ -1,6 +1,6 @@
-import { User, UserCreation, UserDetails } from "../types/user";
+import { UserCreation, UserDetails } from "../types/user";
 
-export async function createUser(input: UserCreation): Promise<User> {
+export async function createUser(input: UserCreation): Promise<void> {
   const res = await fetch("/api/users", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -10,8 +10,6 @@ export async function createUser(input: UserCreation): Promise<User> {
   if (!res.ok) {
     throw new Error("Failed to create User");
   }
-
-  return res.json();
 }
 
 export async function getCurrentUserDetails(): Promise<UserDetails> {

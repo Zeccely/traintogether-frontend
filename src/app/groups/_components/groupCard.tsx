@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Loading } from "@/components/ui/loading";
 import { getMyGroup } from "@/lib/api/groups";
 import { GroupDTO } from "@/lib/types/group";
 import GroupCreateCard from "./groupCreateCard";
@@ -42,7 +43,7 @@ export default function GroupCard() {
   }
 
   if (loading) {
-    return <div>Loading group...</div>;
+    return <Loading label="Loading group" />;
   }
 
   if (myGroup) {
@@ -64,9 +65,7 @@ export default function GroupCard() {
 
   return (
     <div className="grid gap-4 md:grid-cols-2">
-      {errorMessage ? (
-        <p className="md:col-span-2 text-sm text-red-400">{errorMessage}</p>
-      ) : null}
+      {errorMessage ? <p className="md:col-span-2 text-sm text-red-400">{errorMessage}</p> : null}
 
       <GroupCreateCard onCreated={handleGroupChanged} onError={setErrorMessage} />
       <GroupJoinCard onJoined={handleGroupChanged} />

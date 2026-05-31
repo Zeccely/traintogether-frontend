@@ -12,10 +12,7 @@ type GroupCreateCardProps = {
   onError: (message: string) => void;
 };
 
-export default function GroupCreateCard({
-  onCreated,
-  onError,
-}: GroupCreateCardProps) {
+export default function GroupCreateCard({ onCreated, onError }: GroupCreateCardProps) {
   const {
     register,
     handleSubmit,

@@ -37,7 +37,7 @@ export default function GoalsContent() {
   }
 
   if (goal) {
-    return <MyGoal goal={goal} />;
+    return <MyGoal goal={goal} onDeleted={() => setGoal(null)} />;
   }
 
   return <GoalForm />;
