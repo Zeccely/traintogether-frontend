@@ -13,6 +13,7 @@ publish:
   stage: publish
   script:
     - echo "$DOCKERHUB_PATTOKEN" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
+    - curl -v https://registry-1.docker.io/v2/ || true
     - docker build -t zeccely/traintogether-frontend:latest .
     - docker push zeccely/traintogether-frontend:latest
 
