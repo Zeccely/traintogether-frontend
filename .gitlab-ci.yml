@@ -12,10 +12,23 @@ build:
 publish:
   stage: publish
   script:
+    - hostname
+    - whoami
+    - id
+    - pwd
+
+    - ip route || true
+    - cat /etc/resolv.conf || true
+    - env | grep -i proxy || true
+
+    - docker context ls || true
+    - docker info || true
+
     - curl -v https://registry-1.docker.io/v2/ || true
+
+    - echo | openssl s_client -connect registry-1.docker.io:443 -servername registry-1.docker.io 2>/dev/null | openssl x509 -noout -subject -issuer -dates || true
+
     - echo "$DOCKERHUB_PATTOKEN" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
-    - docker build -t zeccely/traintogether-frontend:latest .
-    - docker push zeccely/traintogether-frontend:latest
 
 deploy:
   stage: deploy
