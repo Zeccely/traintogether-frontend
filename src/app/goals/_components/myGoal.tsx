@@ -13,6 +13,7 @@ type MyGoalProps = {
 
 export default function MyGoal({ goal, onDeleted }: MyGoalProps) {
   const [isConfirmingDelete, setIsConfirmingDelete] = useState(false);
+  const [isConfirmingEntryDeletion, setIsConfirmingEntryDeletion] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
@@ -25,6 +26,7 @@ export default function MyGoal({ goal, onDeleted }: MyGoalProps) {
       onDeleted();
     } catch (error) {
       console.error("Error deleting goal:", error);
+      setIsConfirmingEntryDeletion(false);
       setIsConfirmingDelete(false);
       setErrorMessage(
         error instanceof Error && error.message
@@ -66,8 +68,19 @@ export default function MyGoal({ goal, onDeleted }: MyGoalProps) {
         isOpen={isConfirmingDelete}
         title="Delete goal?"
         message="Are you sure you want to delete your goal?"
-        isPending={isDeleting}
         onCancel={() => setIsConfirmingDelete(false)}
+        onConfirm={() => {
+          setIsConfirmingDelete(false);
+          setIsConfirmingEntryDeletion(true);
+        }}
+      />
+      <ConfirmationWindow
+        isOpen={isConfirmingEntryDeletion}
+        title="Delete all entries?"
+        message="Deleting your goal will delete all entries. Do you still want to continue?"
+        isPending={isDeleting}
+        confirmLabel="Delete goal and entries"
+        onCancel={() => setIsConfirmingEntryDeletion(false)}
         onConfirm={handleDelete}
       />
     </Card>
