@@ -44,8 +44,8 @@ export default function StakesContent() {
   }
 
   if (stake?.description) {
-    return <MyStake stake={stake} groupName={groupName} />;
+    return <MyStake stake={stake} groupName={groupName} onSaved={setStake} />;
   }
 
-  return <StakeForm onAdded={setStake} />;
+  return <StakeForm onSaved={setStake} />;
 }

@@ -42,14 +42,26 @@ export default function LoginForm() {
             <Input
               placeholder="Username"
               aria-invalid={Boolean(errors.username)}
-              {...register("username", { required: true })}
+              aria-describedby={errors.username ? "username-error" : undefined}
+              {...register("username", { required: "Username is required." })}
             />
+            {errors.username?.message ? (
+              <p id="username-error" className="text-sm text-destructive">
+                {errors.username.message}
+              </p>
+            ) : null}
             <Input
               placeholder="Password"
               type="password"
               aria-invalid={Boolean(errors.passwordInput)}
-              {...register("passwordInput", { required: true })}
+              aria-describedby={errors.passwordInput ? "password-error" : undefined}
+              {...register("passwordInput", { required: "Password is required." })}
             />
+            {errors.passwordInput?.message ? (
+              <p id="password-error" className="text-sm text-destructive">
+                {errors.passwordInput.message}
+              </p>
+            ) : null}
 
             {loginError && <p className="text-sm text-red-500">{loginError}</p>}
 

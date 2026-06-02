@@ -9,23 +9,29 @@ import { updateMyGroupStake } from "@/lib/api/stakes";
 import { StakeAdding, StakeDTO } from "@/lib/types/stake";
 
 type StakeFormProps = {
-  onAdded: (stake: StakeDTO) => void;
+  initialDescription?: string;
+  onCancel?: () => void;
+  onSaved: (stake: StakeDTO) => void;
 };
 
-export default function StakeForm({ onAdded }: StakeFormProps) {
+export default function StakeForm({ initialDescription = "", onCancel, onSaved }: StakeFormProps) {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<StakeAdding>();
+  } = useForm<StakeAdding>({
+    defaultValues: {
+      description: initialDescription,
+    },
+  });
 
   async function onSubmit(data: StakeAdding) {
     try {
       setSubmitting(true);
       setErrorMessage(null);
-      onAdded(await updateMyGroupStake(data));
+      onSaved(await updateMyGroupStake(data));
     } catch (error) {
       console.error(error);
       setErrorMessage(
@@ -49,11 +55,24 @@ export default function StakeForm({ onAdded }: StakeFormProps) {
           <Input
             placeholder="Stake description"
             aria-invalid={Boolean(errors.description)}
-            {...register("description", { required: true })}
+            aria-describedby={errors.description ? "stake-description-error" : undefined}
+            {...register("description", { required: "Stake description is required." })}
           />
-          <Button type="submit" disabled={submitting}>
-            Save stake
-          </Button>
+          {errors.description?.message ? (
+            <p id="stake-description-error" className="text-sm text-destructive">
+              {errors.description.message}
+            </p>
+          ) : null}
+          <div className="flex gap-2">
+            <Button type="submit" disabled={submitting}>
+              Save stake
+            </Button>
+            {onCancel ? (
+              <Button type="button" variant="outline" disabled={submitting} onClick={onCancel}>
+                Cancel
+              </Button>
+            ) : null}
+          </div>
         </form>
 
         {errorMessage ? <p className="mt-3 text-sm text-red-400">{errorMessage}</p> : null}
