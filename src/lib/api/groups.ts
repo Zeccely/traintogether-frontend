@@ -1,4 +1,6 @@
-import { GroupCreation, GroupDTO, GroupUserDTO } from "@/lib/types/group";
+import { Client } from "@stomp/stompjs";
+import SockJS from "sockjs-client";
+import { GroupChangeEvent, GroupCreation, GroupDTO, GroupUserDTO } from "@/lib/types/group";
 
 export async function createGroup(input: GroupCreation): Promise<GroupDTO> {
   const response = await fetch("/api/groups", {
@@ -82,4 +84,25 @@ export async function getMyGroupUsers(): Promise<GroupUserDTO[]> {
   }
 
   return response.json();
+}
+
+export function subscribeToGroupChanges(
+  onGroupChanged: (event: GroupChangeEvent) => void,
+): () => void {
+  const websocketUrl =
+    process.env.NEXT_PUBLIC_WEBSOCKET_URL ??
+    `${window.location.protocol}//${window.location.hostname}:8080/ws`;
+  const client = new Client({
+    webSocketFactory: () => new SockJS(websocketUrl),
+    reconnectDelay: 5000,
+    onConnect: () => {
+      client.subscribe("/topic/groups", (message) => {
+        onGroupChanged(JSON.parse(message.body) as GroupChangeEvent);
+      });
+    },
+  });
+
+  client.activate();
+
+  return () => void client.deactivate();
 }

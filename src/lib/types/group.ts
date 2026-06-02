@@ -17,3 +17,8 @@ export type GroupUserDTO = {
   groupId?: number;
   goalId?: number;
 };
+
+export type GroupChangeEvent = {
+  groupId: number;
+  type: "JOINED" | "LEFT";
+};

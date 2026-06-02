@@ -5,7 +5,8 @@ import { LogOut } from "lucide-react";
 import ConfirmationWindow from "@/components/shared/confirmation-window";
 import { Button } from "@/components/ui/button";
 import { Card, CardAction, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { getMyGroupUsers, leaveGroup } from "@/lib/api/groups";
+import { getMyGroupUsers, leaveGroup, subscribeToGroupChanges } from "@/lib/api/groups";
+import { playJoinSound } from "@/lib/audio/play-join-sound";
 import { GroupDTO, GroupUserDTO } from "@/lib/types/group";
 
 type MyGroupCardProps = {
@@ -22,7 +23,17 @@ export default function MyGroupCard({ group, onLeft }: MyGroupCardProps) {
 
   useEffect(() => {
     loadTeammates();
-  }, []);
+
+    return subscribeToGroupChanges((event) => {
+      if (event.groupId === group.id) {
+        if (event.type === "JOINED") {
+          void playJoinSound();
+        }
+
+        loadTeammates();
+      }
+    });
+  }, [group.id]);
 
   async function loadTeammates() {
     try {
