@@ -89,9 +89,7 @@ export async function getMyGroupUsers(): Promise<GroupUserDTO[]> {
 export function subscribeToGroupChanges(
   onGroupChanged: (event: GroupChangeEvent) => void,
 ): () => void {
-  const websocketUrl =
-    process.env.NEXT_PUBLIC_WEBSOCKET_URL ??
-    `${window.location.protocol}//${window.location.hostname}:8080/ws`;
+  const websocketUrl = process.env.NEXT_PUBLIC_WEBSOCKET_URL ?? "/ws";
   const client = new Client({
     webSocketFactory: () => new SockJS(websocketUrl),
     reconnectDelay: 5000,
