@@ -1,10 +1,12 @@
 import { expect, test } from "@playwright/test";
 
-test("shows the login page", async ({ page }) => {
-  await page.goto("/login");
+test.describe("Login page", () => {
+  test("logs in a user when the form is filled out", async ({ page }) => {
+    await page.goto("/login");
+    await page.getByPlaceholder("Username").fill("Jess");
+    await page.getByPlaceholder("Password").fill("jess12");
+    await page.getByRole("button", { name: "Log in" }).click();
 
-  await expect(page.getByText("Log In", { exact: true })).toBeVisible();
-  await expect(page.getByPlaceholder("Username")).toBeVisible();
-  await expect(page.getByPlaceholder("Password")).toBeVisible();
-  await expect(page.getByRole("button", { name: "Log in" })).toBeVisible();
+    await expect(page).toHaveURL(/\/dashboard/);
+  });
 });

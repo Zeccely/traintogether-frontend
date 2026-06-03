@@ -17,6 +17,13 @@ test:
     - pnpm lint
     - pnpm run test -- --coverage
 
+e2e:
+  stage: test
+  script:
+    - pnpm install --frozen-lockfile
+    - pnpm exec playwright install chromium
+    - pnpm e2e
+
 publish:
   stage: publish
   script:
