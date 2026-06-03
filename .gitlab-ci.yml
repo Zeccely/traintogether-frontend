@@ -24,6 +24,7 @@ e2e:
     BACKEND_PROJECT_DIR: "../traintogether-backend"
     BACKEND_URL: "http://localhost:8080"
   script:
+    - cd /home/ubuntu/traintogether-backend
     - pnpm install --frozen-lockfile
     - pnpm exec playwright install chromium
     - docker compose --project-directory "$BACKEND_PROJECT_DIR" up -d db backend
