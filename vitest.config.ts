@@ -1,4 +1,4 @@
-import { defineConfig } from "vitest/config";
+import { configDefaults, defineConfig } from "vitest/config";
 import path from "node:path";
 
 export default defineConfig({
@@ -6,6 +6,8 @@ export default defineConfig({
     environment: "jsdom",
     globals: true,
     setupFiles: "./vitest.setup.ts",
+    include: ["src/**/*.{test,spec}.{ts,tsx}"],
+    exclude: [...configDefaults.exclude, "tests/**"],
   },
   resolve: {
     alias: {
