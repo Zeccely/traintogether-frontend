@@ -1,6 +1,7 @@
 stages:
   - build
   - test
+  - e2e
   - publish
   - deploy
 
@@ -18,11 +19,17 @@ test:
     - pnpm run test -- --coverage
 
 e2e:
-  stage: test
+  stage: e2e
+  variables:
+    BACKEND_PROJECT_DIR: "../traintogether-backend"
+    BACKEND_URL: "http://localhost:8080"
   script:
     - pnpm install --frozen-lockfile
     - pnpm exec playwright install chromium
+    - docker compose --project-directory "$BACKEND_PROJECT_DIR" up -d db backend
     - pnpm e2e
+  after_script:
+    - docker compose --project-directory "$BACKEND_PROJECT_DIR" down
 
 publish:
   stage: publish
