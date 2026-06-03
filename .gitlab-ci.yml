@@ -1,5 +1,6 @@
 stages:
   - build
+  - test
   - publish
   - deploy
 
@@ -8,6 +9,13 @@ build:
   script:
     - pnpm install --frozen-lockfile
     - pnpm run build
+
+test:
+  stage: test
+  script:
+    - pnpm install --frozen-lockfile
+    - pnpm lint
+    - pnpm run test -- --coverage
 
 publish:
   stage: publish

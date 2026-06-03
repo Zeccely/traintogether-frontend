@@ -38,7 +38,7 @@ export default function LoginForm() {
         </CardHeader>
 
         <CardContent>
-          <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-2">
+          <form method="post" onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-2">
             <Input
               placeholder="Username"
               aria-invalid={Boolean(errors.username)}
