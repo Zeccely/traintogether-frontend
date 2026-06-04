@@ -23,6 +23,8 @@ e2e:
   variables:
     BACKEND_URL: "http://localhost:8080"
   script:
+    - cd ~/traintogether-deploy
+    - docker compose up -d ttbackend
     - pnpm install --frozen-lockfile
     - pnpm exec playwright install chromium
     - pnpm e2e
