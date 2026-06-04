@@ -25,7 +25,7 @@ e2e:
   before_script:
     - cd ~/traintogether-deploy
     - docker compose up -d backend
-    - cd
+    - cd "$CI_PROJECT_DIR"
   script:
     - pnpm install --frozen-lockfile
     - pnpm exec playwright install chromium
