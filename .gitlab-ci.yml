@@ -22,9 +22,10 @@ e2e:
   stage: e2e
   variables:
     BACKEND_URL: "http://localhost:8080"
-  script:
+  before_script:
     - cd ~/traintogether-deploy
     - docker compose up -d backend
+  script:
     - pnpm install --frozen-lockfile
     - pnpm exec playwright install chromium
     - pnpm e2e
