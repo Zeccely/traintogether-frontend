@@ -1,5 +1,4 @@
 import { expect, test } from "@playwright/test";
-import { loginWithCredentials, signUpAsUser } from "./helpers/auth";
 
 test.describe("Goals page", () => {
   test("redirects to login if not authenticated", async ({ page }) => {
@@ -15,8 +14,19 @@ test.describe("Authenticated goals page", () => {
     const testPassword = "Password123!";
     const testName = "E2E Goals User";
 
-    await signUpAsUser(page, testUsername, testPassword, testName);
-    await loginWithCredentials(page, testUsername, testPassword);
+    await page.goto("/signup");
+    await page.getByPlaceholder("Username").fill(testUsername);
+    await page.getByPlaceholder("Password").fill(testPassword);
+    await page.getByPlaceholder("What do you want to be called?").fill(testName);
+    await page.getByRole("button", { name: "Sign Up" }).click();
+    await expect(page.getByText("User created!")).toBeVisible();
+
+    await page.goto("/login");
+    await page.getByPlaceholder("Username").fill(testUsername);
+    await page.getByPlaceholder("Password").fill(testPassword);
+    await page.getByRole("button", { name: "Log in" }).click();
+    await expect(page).toHaveURL(/\/dashboard/);
+
     await page.goto("/goals");
   });
 
