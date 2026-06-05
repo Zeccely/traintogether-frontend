@@ -10,7 +10,7 @@ test.describe("Dashboard page", () => {
 
 test.describe("Authenticated dashboard page", () => {
   test.beforeEach(async ({ page }) => {
-    await loginAsUser(page);
+    await loginAsUser(page); //put it here instead
   });
 
   test("displays the dashboard after logging in", async ({ page }) => {

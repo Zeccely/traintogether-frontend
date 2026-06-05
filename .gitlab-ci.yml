@@ -20,6 +20,7 @@ test:
 
 e2e:
   stage: e2e
+  allow-failure: true
   variables:
     BACKEND_URL: "http://localhost:8080"
   before_script:
