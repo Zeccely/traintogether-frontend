@@ -22,11 +22,10 @@ e2e:
   stage: e2e
   allow_failure: true
   variables:
-    BACKEND_URL: "http://localhost:8080"
     APP_URL: "http://localhost:3000"
+    BACKEND_URL: "http://localhost:8081"
   before_script:
     - docker compose -f compose.e2e.yaml up -d --force-recreate backend
-    - until curl -s -o /dev/null http://localhost:8080; do echo "waiting for backend"; sleep 2; done
   script:
     - pnpm install --frozen-lockfile
     - pnpm exec playwright install chromium
