@@ -23,14 +23,6 @@ export async function signUpUser(page: Page, user: TestUser) {
 
   await page.getByRole("button", { name: "Sign Up" }).click();
 
-  page.on("response", async (response) => {
-    if (response.url().includes("/api/users")) {
-      console.log("SIGNUP STATUS:", response.status());
-      console.log("SIGNUP URL:", response.url());
-      console.log("SIGNUP BODY:", await response.text());
-    }
-  });
-
   await expect(page.getByText("User created!")).toBeVisible();
 }
 
