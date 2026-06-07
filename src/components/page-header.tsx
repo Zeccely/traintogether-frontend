@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { cookies } from "next/headers";
+import { isAuthenticated } from "@/lib/auth/auth";
 import HeaderAuthActions from "./header-auth-actions";
 
 const navigationLinks = [
@@ -10,7 +11,8 @@ const navigationLinks = [
 ];
 
 export default async function PageHeader() {
-  const isLoggedIn = (await cookies()).has("ACCESS");
+  const cookieHeader = (await cookies()).toString();
+  const isLoggedIn = await getIsLoggedIn(cookieHeader);
 
   return (
     <header className="flex h-13.75 items-center justify-between border-b border-border bg-background px-6">
@@ -35,4 +37,16 @@ export default async function PageHeader() {
       </div>
     </header>
   );
+}
+
+async function getIsLoggedIn(cookieHeader: string): Promise<boolean> {
+  if (!cookieHeader) {
+    return false;
+  }
+
+  try {
+    return await isAuthenticated(cookieHeader);
+  } catch {
+    return false;
+  }
 }

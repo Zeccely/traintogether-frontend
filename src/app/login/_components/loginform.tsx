@@ -1,6 +1,5 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -15,15 +14,13 @@ export default function LoginForm() {
     handleSubmit,
     formState: { errors },
   } = useForm<LoginInput>();
-  const router = useRouter();
   const [loginError, setLoginError] = useState<string | null>(null);
 
   const onSubmit = async (data: LoginInput) => {
     try {
       setLoginError(null);
       await login(data);
-      router.replace("/dashboard");
-      router.refresh();
+      window.location.replace("/dashboard");
     } catch (error) {
       console.error(error);
       setLoginError("Login failed. Check your username and password.");

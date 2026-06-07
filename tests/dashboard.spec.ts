@@ -1,4 +1,5 @@
 import { expect, test } from "@playwright/test";
+import { createRandomUser, signUpUser, loginUser } from "./helpers/test-user";
 
 test.describe("Dashboard page", () => {
   test("redirects to login if not authenticated", async ({ page }) => {
@@ -9,19 +10,10 @@ test.describe("Dashboard page", () => {
 
 test.describe("Authenticated dashboard page", () => {
   test.beforeEach(async ({ page }) => {
-    const username = process.env.TEST_USER_USERNAME;
-    const password = process.env.TEST_USER_PASSWORD;
+    const user = createRandomUser();
 
-    if (!username || !password) {
-      throw new Error("Missing TEST_USER_USERNAME or TEST_USER_PASSWORD in .env.local");
-    }
-
-    await page.goto("/login");
-    await page.getByPlaceholder("Username").fill(username);
-    await page.getByPlaceholder("Password").fill(password);
-    await page.getByRole("button", { name: "Log in" }).click();
-
-    await expect(page).toHaveURL(/\/dashboard/);
+    await signUpUser(page, user);
+    await loginUser(page, user);
   });
 
   test("displays the dashboard after logging in", async ({ page }) => {
@@ -36,7 +28,6 @@ test.describe("Authenticated dashboard page", () => {
 
   test("logs out from the dashboard", async ({ page }) => {
     await page.getByRole("button", { name: "Logout" }).click();
-
     await expect(page).toHaveURL(/\/login/);
   });
 });
