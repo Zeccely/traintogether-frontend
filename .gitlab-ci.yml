@@ -22,7 +22,7 @@ e2e:
   stage: e2e
   allow_failure: true
   variables:
-    APP_URL: "http://localhost:3000"
+    PLAYWRIGHT_BASE_URL: "http://localhost"
     BACKEND_URL: "http://localhost:8081"
   before_script:
     - docker compose -f compose.e2e.yaml up -d --force-recreate backend
