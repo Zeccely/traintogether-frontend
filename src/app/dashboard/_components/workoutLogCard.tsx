@@ -4,38 +4,49 @@ import { useEffect, useState } from "react";
 import { Check, Dumbbell } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { isTodaysWorkoutLogged, logTodaysWorkout } from "@/lib/api/goalProgress";
+import { getMyGoalProgress, isTodaysWorkoutLogged, logTodaysWorkout } from "@/lib/api/goalProgress";
+import { GoalProgress } from "@/lib/types/goalProgress";
+import WorkoutHistoryList from "./workoutHistoryList";
 import WeekdayProgress from "./weekdayProgress";
 
 export default function WorkoutLogCard() {
   const [isCheckingLoggedState, setIsCheckingLoggedState] = useState(true);
   const [isLogged, setIsLogged] = useState(false);
+  const [progressEntries, setProgressEntries] = useState<GoalProgress[]>([]);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   useEffect(() => {
-    async function checkLoggedState() {
+    async function loadWorkoutState() {
       try {
-        setIsLogged(await isTodaysWorkoutLogged());
+        const [isTodayLogged, loadedProgressEntries] = await Promise.all([
+          isTodaysWorkoutLogged(),
+          getMyGoalProgress(),
+        ]);
+
+        setIsLogged(isTodayLogged);
+        setProgressEntries(loadedProgressEntries);
       } catch (error) {
         console.error(error);
         setErrorMessage(
           error instanceof Error && error.message
             ? error.message
-            : "Could not check today's workout.",
+            : "Could not load your workout progress.",
         );
       } finally {
         setIsCheckingLoggedState(false);
       }
     }
 
-    checkLoggedState();
+    loadWorkoutState();
   }, []);
 
   async function handleLogWorkout() {
     try {
       setErrorMessage(null);
       await logTodaysWorkout();
+      const loadedProgressEntries = await getMyGoalProgress();
       setIsLogged(true);
+      setProgressEntries(loadedProgressEntries);
     } catch (error) {
       console.error(error);
       setErrorMessage(
@@ -54,7 +65,8 @@ export default function WorkoutLogCard() {
           Log your workout when you have completed today&apos;s goal.
         </p>
 
-        <WeekdayProgress isTodayLogged={isLogged} />
+        <WeekdayProgress progressEntries={progressEntries} />
+        <WorkoutHistoryList progressEntries={progressEntries} />
 
         <Button
           type="button"
@@ -62,11 +74,7 @@ export default function WorkoutLogCard() {
           onClick={handleLogWorkout}
         >
           {isLogged ? <Check /> : <Dumbbell />}
-          {isLogged
-            ? "Workout logged"
-            : isCheckingLoggedState
-              ? "Checking today's workout..."
-              : "Log today's workout"}
+          {isLogged ? "Workout logged" : "Log today's workout"}
         </Button>
 
         {errorMessage ? <p className="text-sm text-destructive">{errorMessage}</p> : null}

@@ -1,8 +1,9 @@
 import { Check } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { GoalProgress } from "@/lib/types/goalProgress";
 
 type WeekdayProgressProps = {
-  isTodayLogged: boolean;
+  progressEntries: GoalProgress[];
 };
 
 const weekdays = [
@@ -15,14 +16,17 @@ const weekdays = [
   { label: "S", day: 0 },
 ];
 
-export default function WeekdayProgress({ isTodayLogged }: WeekdayProgressProps) {
+export default function WeekdayProgress({ progressEntries }: WeekdayProgressProps) {
   const today = new Date().getDay();
+  const completedWeekdays = new Set(
+    progressEntries.map((entry) => new Date(`${entry.dateRegistration}T00:00:00`).getDay()),
+  );
 
   return (
     <div className="flex flex-wrap gap-2" aria-label="Workout progress for this week">
       {weekdays.map((weekday, index) => {
         const isToday = weekday.day === today;
-        const isCompleted = isToday && isTodayLogged;
+        const isCompleted = completedWeekdays.has(weekday.day);
 
         return (
           <div

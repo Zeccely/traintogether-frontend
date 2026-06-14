@@ -25,3 +25,16 @@ export async function isTodaysWorkoutLogged(): Promise<boolean> {
 
   return response.json();
 }
+
+export async function getMyGoalProgress(): Promise<GoalProgress[]> {
+  const response = await fetch("/api/goal-progress/my-goal", {
+    method: "GET",
+    credentials: "include",
+  });
+
+  if (!response.ok) {
+    throw new Error((await response.text()) || "Could not load workout history.");
+  }
+
+  return response.json();
+}
