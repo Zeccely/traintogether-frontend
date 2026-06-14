@@ -1,6 +1,7 @@
 import { Check } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { GoalProgress } from "@/lib/types/goalProgress";
+//I used help
 
 type WeekdayProgressProps = {
   progressEntries: GoalProgress[];

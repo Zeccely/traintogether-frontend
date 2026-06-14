@@ -10,7 +10,6 @@ import WorkoutHistoryList from "./workoutHistoryList";
 import WeekdayProgress from "./weekdayProgress";
 
 export default function WorkoutLogCard() {
-  const [isCheckingLoggedState, setIsCheckingLoggedState] = useState(true);
   const [isLogged, setIsLogged] = useState(false);
   const [progressEntries, setProgressEntries] = useState<GoalProgress[]>([]);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -32,8 +31,6 @@ export default function WorkoutLogCard() {
             ? error.message
             : "Could not load your workout progress.",
         );
-      } finally {
-        setIsCheckingLoggedState(false);
       }
     }
 
@@ -68,11 +65,7 @@ export default function WorkoutLogCard() {
         <WeekdayProgress progressEntries={progressEntries} />
         <WorkoutHistoryList progressEntries={progressEntries} />
 
-        <Button
-          type="button"
-          disabled={isCheckingLoggedState || isLogged}
-          onClick={handleLogWorkout}
-        >
+        <Button type="button" disabled={isLogged} onClick={handleLogWorkout}>
           {isLogged ? <Check /> : <Dumbbell />}
           {isLogged ? "Workout logged" : "Log today's workout"}
         </Button>

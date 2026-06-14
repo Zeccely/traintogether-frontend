@@ -17,7 +17,7 @@ export default function WorkoutHistoryList({ progressEntries }: WorkoutHistoryLi
 
   return (
     <div className="flex flex-col gap-2">
-      <h3 className="text-sm font-medium">Workout days</h3>
+      <h3 className="text-sm font-medium">Workout History</h3>
       <ul className="list-disc space-y-1 pl-5 text-sm text-muted-foreground">
         {sortedEntries.map((entry) => (
           <li key={entry.id}>{formatWorkoutDate(entry.dateRegistration)}</li>
