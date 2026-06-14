@@ -36,7 +36,6 @@ e2e:
 publish:
   stage: publish
   script:
-    - echo "52.55.137.78 registry-1.docker.io" | sudo tee -a /etc/hosts
     - echo "$DOCKERHUB_PATTOKEN" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
     - docker build -t zeccely/traintogether-frontend:latest .
     - docker push zeccely/traintogether-frontend:latest
