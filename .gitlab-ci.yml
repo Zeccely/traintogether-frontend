@@ -41,6 +41,8 @@ publish:
     - echo "$DOCKERHUB_PATTOKEN" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
     - docker build -t zeccely/traintogether-frontend:latest .
     - docker push zeccely/traintogether-frontend:latest
+  only:
+    - main
 
 deploy:
   stage: deploy
