@@ -95,7 +95,7 @@ export default function GroupCard() {
   }
 
   if (myGroup) {
-    return <MyGroupCard group={myGroup} onLeft={() => setMyGroup(null)} hasGoal={goal !== null} />; //making the goal into true
+    return <MyGroupCard group={myGroup} onLeft={() => setMyGroup(null)} />;
   }
 
   if (!goal) {

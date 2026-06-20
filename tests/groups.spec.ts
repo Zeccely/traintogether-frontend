@@ -47,6 +47,11 @@ test.describe("Authenticated groups page", () => {
 
     await expect(page.getByText(groupName)).toBeVisible();
     await expect(page.getByRole("heading", { name: "Teammates" })).toBeVisible();
-    await expect(page.getByRole("button", { name: "Leave group" })).toBeDisabled();
+    await expect(page.getByRole("button", { name: "Leave group" })).toBeEnabled();
+
+    await page.getByRole("link", { name: "Goals" }).click();
+
+    await expect(page).toHaveURL(/\/goals/);
+    await expect(page.getByRole("button", { name: "Delete goal" })).toBeDisabled();
   });
 });

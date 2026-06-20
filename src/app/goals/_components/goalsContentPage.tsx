@@ -5,21 +5,24 @@ import { Loading } from "@/components/ui/loading";
 import GoalForm from "./goalform";
 import MyGoal from "./myGoal";
 import { getMyGoal } from "@/lib/api/goals";
+import { getMyGroup } from "@/lib/api/groups";
 import { Goal } from "@/lib/types/goal";
 
 export default function GoalsContent() {
   const [goal, setGoal] = useState<Goal | null>(null);
+  const [isInGroup, setIsInGroup] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   useEffect(() => {
     async function loadGoal() {
       try {
-        const myGoal = await getMyGoal();
+        const [myGoal, myGroup] = await Promise.all([getMyGoal(), getMyGroup()]);
         setGoal(myGoal);
+        setIsInGroup(myGroup !== null);
       } catch (error) {
         console.error(error);
-        setErrorMessage("Could not load your goal.");
+        setErrorMessage("Could not load your goal or group.");
       } finally {
         setIsLoading(false);
       }
@@ -37,7 +40,7 @@ export default function GoalsContent() {
   }
 
   if (goal) {
-    return <MyGoal goal={goal} onDeleted={() => setGoal(null)} />;
+    return <MyGoal goal={goal} isInGroup={isInGroup} onDeleted={() => setGoal(null)} />;
   }
 
   return <GoalForm />;

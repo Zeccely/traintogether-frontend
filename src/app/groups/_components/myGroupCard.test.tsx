@@ -24,31 +24,30 @@ describe("MyGroupCard", () => {
       { username: "sam", name: "Sam Sprinter", groupId: 1 },
     ]);
 
-    render(<MyGroupCard group={group} onLeft={() => {}} hasGoal={false} />);
+    render(<MyGroupCard group={group} onLeft={() => {}} />);
 
     expect(await screen.findByText("Alex Runner")).toBeInTheDocument();
     expect(screen.getByText("alex")).toBeInTheDocument();
     expect(screen.getByText("Sam Sprinter")).toBeInTheDocument();
   });
 
-  test("disables leaving the group while the user still has a goal", async () => {
+  test("allows leaving the group so the user can delete their goal afterward", async () => {
     vi.mocked(getMyGroupUsers).mockResolvedValue([]);
 
-    render(<MyGroupCard group={group} onLeft={() => {}} hasGoal />);
+    render(<MyGroupCard group={group} onLeft={() => {}} />);
 
     const leaveButton = screen.getByRole("button", { name: "Leave group" });
 
-    expect(leaveButton).toBeDisabled();
-    expect(leaveButton).toHaveAttribute("title", "Delete your goal before leaving the group");
+    expect(leaveButton).toBeEnabled();
     expect(await screen.findByText("No teammates yet.")).toBeInTheDocument();
   });
 
-  test("leaves the group after confirmation when the user has no goal", async () => {
+  test("leaves the group after confirmation", async () => {
     const onLeft = vi.fn();
     vi.mocked(getMyGroupUsers).mockResolvedValue([]);
     vi.mocked(leaveGroup).mockResolvedValue(undefined);
 
-    render(<MyGroupCard group={group} onLeft={onLeft} hasGoal={false} />);
+    render(<MyGroupCard group={group} onLeft={onLeft} />);
 
     fireEvent.click(screen.getByRole("button", { name: "Leave group" }));
 
@@ -76,7 +75,7 @@ describe("MyGroupCard", () => {
     });
     vi.mocked(playJoinSound).mockResolvedValue(undefined);
 
-    render(<MyGroupCard group={group} onLeft={() => {}} hasGoal={false} />);
+    render(<MyGroupCard group={group} onLeft={() => {}} />);
 
     expect(await screen.findByText("No teammates yet.")).toBeInTheDocument();
 

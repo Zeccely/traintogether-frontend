@@ -12,10 +12,9 @@ import { GroupDTO, GroupUserDTO } from "@/lib/types/group";
 type MyGroupCardProps = {
   group: GroupDTO;
   onLeft: () => void;
-  hasGoal: boolean;
 };
 
-export default function MyGroupCard({ group, onLeft, hasGoal }: MyGroupCardProps) {
+export default function MyGroupCard({ group, onLeft }: MyGroupCardProps) {
   const [teammates, setTeammates] = useState<GroupUserDTO[]>([]);
   const [loadingTeammates, setLoadingTeammates] = useState(true);
   const [isConfirmingLeave, setIsConfirmingLeave] = useState(false);
@@ -87,8 +86,6 @@ export default function MyGroupCard({ group, onLeft, hasGoal }: MyGroupCardProps
             variant="destructive"
             size="icon-sm"
             aria-label="Leave group"
-            disabled={hasGoal}
-            title={hasGoal ? "Delete your goal before leaving the group" : undefined} // if has goal is true then the "title" hoverable is nothing
             onClick={() => setIsConfirmingLeave(true)}
           >
             <LogOut />

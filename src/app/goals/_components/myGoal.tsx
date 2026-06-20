@@ -8,10 +8,11 @@ import { Trash2 } from "lucide-react";
 
 type MyGoalProps = {
   goal: Goal;
+  isInGroup: boolean;
   onDeleted: () => void;
 };
 
-export default function MyGoal({ goal, onDeleted }: MyGoalProps) {
+export default function MyGoal({ goal, isInGroup, onDeleted }: MyGoalProps) {
   const [isConfirmingDelete, setIsConfirmingDelete] = useState(false);
   const [isConfirmingEntryDeletion, setIsConfirmingEntryDeletion] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
@@ -48,6 +49,8 @@ export default function MyGoal({ goal, onDeleted }: MyGoalProps) {
             variant="destructive"
             size="icon-sm"
             aria-label="Delete goal"
+            disabled={isInGroup}
+            title={isInGroup ? "Leave your group before deleting your goal" : undefined}
             onClick={() => setIsConfirmingDelete(true)}
           >
             <Trash2 />

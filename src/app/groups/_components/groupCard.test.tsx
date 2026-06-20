@@ -45,7 +45,7 @@ describe("GroupCard", () => {
     expect(screen.getByText("Join a group")).toBeInTheDocument();
   });
 
-  test("passes the goal state to the current group card", async () => {
+  test("allows a user with a goal to leave their current group", async () => {
     vi.mocked(getMyGroup).mockResolvedValue({
       id: 1,
       groupName: "Morning runners",
@@ -61,7 +61,7 @@ describe("GroupCard", () => {
     expect(await screen.findByText("Morning runners")).toBeInTheDocument();
 
     await waitFor(() => {
-      expect(screen.getByRole("button", { name: "Leave group" })).toBeDisabled();
+      expect(screen.getByRole("button", { name: "Leave group" })).toBeEnabled();
     });
   });
 });
