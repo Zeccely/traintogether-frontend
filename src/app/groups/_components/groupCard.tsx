@@ -19,34 +19,63 @@ export default function GroupCard() {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [goal, setGoal] = useState<Goal | null>(null);
 
-  useEffect(() => {
-    checkMyGroup();
-  }, []);
-
-  async function checkMyGroup() {
-    try {
-      setLoading(true);
-      setLoadErrorMessage(null);
-      setErrorMessage(null);
-      const [loadedGroup, loadedGoal] = await Promise.all([getMyGroup(), getMyGoal()]);
-      setMyGroup(loadedGroup);
-      setGoal(loadedGoal);
-    } catch (error) {
-      console.error(error);
-      setLoadErrorMessage(
-        error instanceof Error && error.message
-          ? error.message
-          : "Could not load your group. Please try again.",
-      );
-    } finally {
-      setLoading(false);
-    }
-  }
-
   function handleGroupChanged(group: GroupDTO) {
     setMyGroup(group);
     setErrorMessage(null);
   }
+
+  useEffect(() => {
+    Promise.all([getMyGroup(), getMyGoal()])
+      .then(([loadedGroup, loadedGoal]) => {
+        setMyGroup(loadedGroup);
+        setGoal(loadedGoal);
+      })
+      .catch((error: unknown) => {
+        console.error(error);
+        setLoadErrorMessage(
+          error instanceof Error && error.message
+            ? error.message
+            : "Could not load your group. Please try again.",
+        );
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  }, []);
+
+  // Bad pattern (kept here as an explanation):
+  // async function checkMyGroup() {
+  //   try {
+  //     const [loadedGroup, loadedGoal] = await Promise.all([getMyGroup(), getMyGoal()]);
+  //     setMyGroup(loadedGroup);
+  //     setGoal(loadedGoal);
+  //   } catch (error) {
+  //     console.error(error);
+  //     setLoadErrorMessage(
+  //       error instanceof Error && error.message
+  //         ? error.message
+  //         : "Could not load your group. Please try again.",
+  //     );
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // }
+  //
+  // useEffect(() => {
+  //   setLoading(true);
+  //   setLoadErrorMessage(null);
+  //   checkMyGroup();
+  // }, []);
+  //
+  // State updates such as setLoading(true) run synchronously when the effect starts.
+  // That creates another render immediately after the initial render, even though
+  // loading is already true and the error is already null. This unnecessary
+  // render cascade is why resetting state this way inside an effect is bad practice.
+  // The state updates inside checkMyGroup happen after await and are reasonable at
+  // runtime. However, calling this state-changing helper directly from the effect
+  // hides that timing from static analysis, so the lint rule conservatively rejects
+  // the whole call. The active version above places the updates visibly inside
+  // Promise callbacks, making it clear they run only after the API promises settle.
 
   if (loading) {
     return <Loading label="Loading group" />;

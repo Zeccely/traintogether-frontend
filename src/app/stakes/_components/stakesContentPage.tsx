@@ -37,7 +37,22 @@ export default function StakesContent() {
   }
 
   useEffect(() => {
-    loadStake();
+    Promise.all([getMyGroupStake(), getMyGroup()])
+      .then(([myStake, myGroup]) => {
+        setStake(myStake);
+        setGroup(myGroup);
+      })
+      .catch((error: unknown) => {
+        console.error(error);
+        setErrorMessage(
+          error instanceof Error && error.message
+            ? error.message
+            : "Could not load your group's stake.",
+        );
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
   }, []);
 
   if (isLoading) {

@@ -23,7 +23,17 @@ export default function MyGroupCard({ group, onLeft, hasGoal }: MyGroupCardProps
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   useEffect(() => {
-    loadTeammates();
+    getMyGroupUsers()
+      .then(setTeammates)
+      .catch((error: unknown) => {
+        console.error(error);
+        setErrorMessage(
+          error instanceof Error && error.message ? error.message : "Could not load teammates.",
+        );
+      })
+      .finally(() => {
+        setLoadingTeammates(false);
+      });
 
     return subscribeToGroupChanges((event) => {
       if (event.groupId === group.id) {
@@ -31,25 +41,24 @@ export default function MyGroupCard({ group, onLeft, hasGoal }: MyGroupCardProps
           void playJoinSound();
         }
 
-        loadTeammates();
+        setLoadingTeammates(true);
+        setErrorMessage(null);
+        getMyGroupUsers()
+          .then(setTeammates)
+          .catch((error: unknown) => {
+            console.error(error);
+            setErrorMessage(
+              error instanceof Error && error.message
+                ? error.message
+                : "Could not load teammates.",
+            );
+          })
+          .finally(() => {
+            setLoadingTeammates(false);
+          });
       }
     });
   }, [group.id]);
-
-  async function loadTeammates() {
-    try {
-      setLoadingTeammates(true);
-      setErrorMessage(null);
-      setTeammates(await getMyGroupUsers());
-    } catch (error) {
-      console.error(error);
-      setErrorMessage(
-        error instanceof Error && error.message ? error.message : "Could not load teammates.",
-      );
-    } finally {
-      setLoadingTeammates(false);
-    }
-  }
 
   async function handleLeave() {
     try {

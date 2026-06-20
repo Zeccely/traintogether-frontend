@@ -16,23 +16,18 @@ export default function GroupJoinCard({ onJoined }: GroupJoinCardProps) {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   useEffect(() => {
-    loadGroups();
+    getGroups()
+      .then(setGroups)
+      .catch((error: unknown) => {
+        console.error(error);
+        setErrorMessage(
+          error instanceof Error && error.message ? error.message : "Could not load groups.",
+        );
+      })
+      .finally(() => {
+        setLoadingGroups(false);
+      });
   }, []);
-
-  async function loadGroups() {
-    try {
-      setLoadingGroups(true);
-      setErrorMessage(null);
-      setGroups(await getGroups());
-    } catch (error) {
-      console.error(error);
-      setErrorMessage(
-        error instanceof Error && error.message ? error.message : "Could not load groups.",
-      );
-    } finally {
-      setLoadingGroups(false);
-    }
-  }
 
   async function handleJoin(groupId: number) {
     try {
