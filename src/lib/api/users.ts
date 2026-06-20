@@ -8,7 +8,7 @@ export async function createUser(input: UserCreation): Promise<void> {
   });
 
   if (!res.ok) {
-    throw new Error("Failed to create User");
+    throw new Error((await res.text()) || `Failed to create user (${res.status})`);
   }
 }
 
