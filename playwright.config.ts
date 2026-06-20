@@ -3,12 +3,12 @@ import { loadEnvConfig } from "@next/env";
 
 loadEnvConfig(process.cwd());
 
-const baseURL = process.env.PLAYWRIGHT_BASE_URL || "http://localhost:3000";
+const baseURL = process.env.PLAYWRIGHT_BASE_URL || "http://localhost:3001";
 
 if (process.env.CI) {
   const requiredUrls = [
-    ["PLAYWRIGHT_BASE_URL", baseURL, "http://localhost:3000"],
-    ["APP_URL", process.env.APP_URL, "http://localhost:3000"],
+    ["PLAYWRIGHT_BASE_URL", baseURL, "http://localhost:3001"],
+    ["APP_URL", process.env.APP_URL, "http://localhost:3001"],
     ["BACKEND_URL", process.env.BACKEND_URL, "http://localhost:8081"],
   ] as const;
 
@@ -39,8 +39,8 @@ export default defineConfig({
     },
   ],
   webServer: {
-    command: "node node_modules/next/dist/bin/next dev",
-    url: "http://localhost:3000",
+    command: "node node_modules/next/dist/bin/next dev --port 3001",
+    url: "http://localhost:3001",
     reuseExistingServer: !process.env.CI,
   },
 });

@@ -22,7 +22,7 @@ e2e:
   stage: e2e
   allow_failure: true
   variables:
-    APP_URL: "http://localhost:3000"
+    APP_URL: "http://localhost:3001"
     PLAYWRIGHT_BASE_URL: "http://localhost:3001"
     BACKEND_URL: "http://localhost:8081"
   before_script:
