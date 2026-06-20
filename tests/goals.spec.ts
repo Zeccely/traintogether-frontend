@@ -1,14 +1,7 @@
 import { expect, test, Page } from "@playwright/test";
-import { createRandomUser, signUpUser, loginUser } from "./helpers/test-user";
+import { createRandomUser, loginUser, signUpUser } from "./helpers/test-user";
 
 const goalFormHeading = "Make a Goal to Achieve!";
-
-async function loginWithTestUser(page: Page) {
-  const user = createRandomUser();
-
-  await signUpUser(page, user);
-  await loginUser(page, user);
-}
 
 async function deleteGoal(page: Page) {
   await page.getByRole("link", { name: "Goals" }).click();
@@ -58,7 +51,10 @@ test.describe("Goals page", () => {
 
 test.describe("Authenticated goals page", () => {
   test.beforeEach(async ({ page }) => {
-    await loginWithTestUser(page);
+    const user = createRandomUser();
+
+    await signUpUser(page, user);
+    await loginUser(page, user);
 
     await page.getByRole("link", { name: "Goals" }).click();
     await expect(page).toHaveURL(/\/goals/);

@@ -75,7 +75,7 @@ export default function StakeForm({ initialDescription = "", onCancel, onSaved }
           </div>
         </form>
 
-        {errorMessage ? <p className="mt-3 text-sm text-red-400">{errorMessage}</p> : null}
+        {errorMessage ? <p className="mt-3 text-sm text-destructive">{errorMessage}</p> : null}
       </CardContent>
     </Card>
   );

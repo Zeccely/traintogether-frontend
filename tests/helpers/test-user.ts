@@ -23,7 +23,7 @@ export async function signUpUser(page: Page, user: TestUser) {
 
   await page.getByRole("button", { name: "Sign Up" }).click();
 
-  await expect(page.getByText("User created!")).toBeVisible();
+  await expect(page).toHaveURL(/\/login/);
 }
 
 export async function loginUser(page: Page, user: TestUser) {

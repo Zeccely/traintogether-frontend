@@ -24,7 +24,7 @@ export async function getGoals(): Promise<Goal[]> {
   });
 
   if (!response.ok) {
-    throw new Error("Goal not found");
+    throw new Error((await response.text()) || "Could not load goals.");
   }
 
   return await response.json();
@@ -41,7 +41,7 @@ export async function getMyGoal(): Promise<Goal | null> {
   }
 
   if (!response.ok) {
-    throw new Error("Goal not found");
+    throw new Error((await response.text()) || "Could not load your goal.");
   }
 
   return await response.json();

@@ -38,3 +38,16 @@ export async function getMyGoalProgress(): Promise<GoalProgress[]> {
 
   return response.json();
 }
+
+export async function getMyGoalProgressForCurrentWeek(): Promise<GoalProgress[]> {
+  const response = await fetch("/api/goal-progress/my-goal/current-week", {
+    method: "GET",
+    credentials: "include",
+  });
+
+  if (!response.ok) {
+    throw new Error((await response.text()) || "Could not load this week's workout progress.");
+  }
+
+  return response.json();
+}

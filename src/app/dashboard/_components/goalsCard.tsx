@@ -1,6 +1,7 @@
 "use client";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Loading } from "@/components/ui/loading";
 import { Goal } from "@/lib/types/goal";
 import { getMyGoal } from "@/lib/api/goals";
 import { useEffect, useState } from "react";
@@ -20,32 +21,27 @@ export default function GoalsCard() {
         setIsLoading(false);
       }
     }
-
     getGoal();
   }, []); //“Only do this once when the component first loads.”
-
-  let goalContent;
-  if (isLoading) {
-    goalContent = null;
-  } else if (goal) {
-    goalContent = (
-      <div>
-        <p>{goal.title}</p>
-        <p>Target: {goal.frequencyTarget} times per week</p>
-        {goal.description && <p>{goal.description}</p>}{" "}
-        {/*this works because jsx also returns a value while checking condition */}
-      </div>
-    );
-  } else {
-    goalContent = <p>No goal found.</p>;
-  }
 
   return (
     <Card>
       <CardHeader>
         <CardTitle>Goals</CardTitle>
       </CardHeader>
-      <CardContent>{goalContent}</CardContent>
+      <CardContent>
+        {isLoading ? (
+          <Loading label="Loading goal" />
+        ) : goal ? (
+          <div>
+            <p>{goal.title}</p>
+            <p>Target: {goal.frequencyTarget} times per week</p>
+            {goal.description && <p>{goal.description}</p>}
+          </div>
+        ) : (
+          <p>No goal found.</p>
+        )}
+      </CardContent>
     </Card>
   );
 }

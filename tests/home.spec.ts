@@ -8,13 +8,17 @@ test.describe("Home page", () => {
     await expect(page.getByRole("heading", { name: "Welcome to TrainTogether" })).toBeVisible();
     await expect(page).toHaveURL("/");
   });
+});
 
-  test("redirects to the dashboard when authenticated", async ({ page }) => {
+test.describe("Authenticated home page", () => {
+  test.beforeEach(async ({ page }) => {
     const user = createRandomUser();
 
     await signUpUser(page, user);
     await loginUser(page, user);
+  });
 
+  test("redirects to the dashboard when authenticated", async ({ page }) => {
     await page.goto("/");
 
     await expect(page).toHaveURL(/\/dashboard/);

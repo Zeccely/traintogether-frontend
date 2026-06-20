@@ -8,12 +8,16 @@ import { GroupDTO } from "@/lib/types/group";
 import GroupCreateCard from "./groupCreateCard";
 import GroupJoinCard from "./groupJoinCard";
 import MyGroupCard from "./myGroupCard";
+import { getMyGoal } from "@/lib/api/goals";
+import { Goal } from "@/lib/types/goal";
+import CreateGoalActionCard from "@/components/shared/createGoalActionCard";
 
 export default function GroupCard() {
   const [loading, setLoading] = useState(true);
   const [myGroup, setMyGroup] = useState<GroupDTO | null>(null);
   const [loadErrorMessage, setLoadErrorMessage] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [goal, setGoal] = useState<Goal | null>(null);
 
   useEffect(() => {
     checkMyGroup();
@@ -24,7 +28,9 @@ export default function GroupCard() {
       setLoading(true);
       setLoadErrorMessage(null);
       setErrorMessage(null);
-      setMyGroup(await getMyGroup());
+      const [loadedGroup, loadedGoal] = await Promise.all([getMyGroup(), getMyGoal()]);
+      setMyGroup(loadedGroup);
+      setGoal(loadedGoal);
     } catch (error) {
       console.error(error);
       setLoadErrorMessage(
@@ -46,10 +52,6 @@ export default function GroupCard() {
     return <Loading label="Loading group" />;
   }
 
-  if (myGroup) {
-    return <MyGroupCard group={myGroup} onLeft={() => setMyGroup(null)} />;
-  }
-
   if (loadErrorMessage) {
     return (
       <Card>
@@ -57,15 +59,25 @@ export default function GroupCard() {
           <CardTitle>Group</CardTitle>
         </CardHeader>
         <CardContent>
-          <p className="text-sm text-red-400">{loadErrorMessage}</p>
+          <p className="text-sm text-destructive">{loadErrorMessage}</p>
         </CardContent>
       </Card>
     );
   }
 
+  if (myGroup) {
+    return <MyGroupCard group={myGroup} onLeft={() => setMyGroup(null)} hasGoal={goal !== null} />; //making the goal into true
+  }
+
+  if (!goal) {
+    return <CreateGoalActionCard />;
+  }
+
   return (
     <div className="grid gap-4 md:grid-cols-2">
-      {errorMessage ? <p className="md:col-span-2 text-sm text-red-400">{errorMessage}</p> : null}
+      {errorMessage ? (
+        <p className="md:col-span-2 text-sm text-destructive">{errorMessage}</p>
+      ) : null}
 
       <GroupCreateCard onCreated={handleGroupChanged} onError={setErrorMessage} />
       <GroupJoinCard onJoined={handleGroupChanged} />

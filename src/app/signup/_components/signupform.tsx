@@ -8,12 +8,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { createUser } from "./../../../lib/api/users";
 import { UserCreation } from "@/lib/types/user";
 
-//const [name, setName] = useState("");
-
-// useEffect(() => {
-//    code here
-//    }, []);
-
 export default function SignUpForm() {
   const [submittedUser, setSubmittedUser] = useState<UserCreation | null>(null);
   const [message, setMessage] = useState<string | null>(null);
@@ -35,7 +29,7 @@ export default function SignUpForm() {
     async function submitUser() {
       try {
         await createUser(userToSubmit);
-        setMessage("User created!");
+        window.location.replace("/login");
       } catch (error) {
         console.log(error);
         setMessage("Could not create user");

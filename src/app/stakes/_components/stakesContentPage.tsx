@@ -5,33 +5,38 @@ import { Loading } from "@/components/ui/loading";
 import { getMyGroup } from "@/lib/api/groups";
 import { getMyGroupStake } from "@/lib/api/stakes";
 import { StakeDTO } from "@/lib/types/stake";
+import { GroupDTO } from "@/lib/types/group";
 import MyStake from "./myStake";
 import StakeForm from "./stakeForm";
+import JoinGroupActionCard from "@/components/shared/joinGroupActionCard";
+import LoadFailRetryCard from "@/components/shared/loadFailRetryCard";
 
 export default function StakesContent() {
   const [stake, setStake] = useState<StakeDTO | null>(null);
-  const [groupName, setGroupName] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [group, setGroup] = useState<GroupDTO | null>(null);
+
+  async function loadStake() {
+    try {
+      setIsLoading(true); //retry also shows the spinner
+      setErrorMessage(null);
+      const [myStake, myGroup] = await Promise.all([getMyGroupStake(), getMyGroup()]);
+      setStake(myStake);
+      setGroup(myGroup);
+    } catch (error) {
+      console.error(error);
+      setErrorMessage(
+        error instanceof Error && error.message
+          ? error.message
+          : "Could not load your group's stake.",
+      );
+    } finally {
+      setIsLoading(false);
+    }
+  }
 
   useEffect(() => {
-    async function loadStake() {
-      try {
-        const [myStake, myGroup] = await Promise.all([getMyGroupStake(), getMyGroup()]);
-        setStake(myStake);
-        setGroupName(myGroup?.groupName ?? null);
-      } catch (error) {
-        console.error(error);
-        setErrorMessage(
-          error instanceof Error && error.message
-            ? error.message
-            : "Could not load your group's stake.",
-        );
-      } finally {
-        setIsLoading(false);
-      }
-    }
-
     loadStake();
   }, []);
 
@@ -40,11 +45,17 @@ export default function StakesContent() {
   }
 
   if (errorMessage) {
-    return <p>{errorMessage}</p>;
+    return <LoadFailRetryCard message={errorMessage} onRetry={loadStake} />;
   }
 
   if (stake?.description) {
-    return <MyStake stake={stake} groupName={groupName} onSaved={setStake} />;
+    // group?.groupName → optional chain: returns undefined if group is null instead of throwing
+    // ?? null → converts that undefined to null to match the expected string | null type
+    return <MyStake stake={stake} groupName={group?.groupName ?? null} onSaved={setStake} />;
+  }
+
+  if (!group) {
+    return <JoinGroupActionCard />;
   }
 
   return <StakeForm onSaved={setStake} />;

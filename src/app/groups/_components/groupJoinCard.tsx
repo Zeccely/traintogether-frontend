@@ -73,7 +73,7 @@ export default function GroupJoinCard({ onJoined }: GroupJoinCardProps) {
           ))}
         </div>
 
-        {errorMessage ? <p className="mt-3 text-sm text-red-400">{errorMessage}</p> : null}
+        {errorMessage ? <p className="mt-3 text-sm text-destructive">{errorMessage}</p> : null}
       </CardContent>
     </Card>
   );

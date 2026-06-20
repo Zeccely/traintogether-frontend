@@ -12,6 +12,12 @@ test.describe("Signup page", () => {
     await page.getByPlaceholder("What do you want to be called?").fill(testName);
     await page.getByRole("button", { name: "Sign Up" }).click();
 
-    await expect(page.getByText("User created!")).toBeVisible();
+    await expect(page).toHaveURL(/\/login/);
+
+    await page.getByPlaceholder("Username").fill(testUsername);
+    await page.getByPlaceholder("Password").fill(testPassword);
+    await page.getByRole("button", { name: "Log in" }).click();
+
+    await expect(page).toHaveURL(/\/dashboard/);
   });
 });

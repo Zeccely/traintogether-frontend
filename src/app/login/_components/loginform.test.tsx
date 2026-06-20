@@ -4,6 +4,11 @@ import { login } from "@/lib/auth/auth";
 
 vi.mock("@/lib/auth/auth");
 
+// jsdom doesn't support real navigation, so we replace window.location with a dummy
+// that records calls without throwing or trying to navigate
+const replaceMock = vi.fn();
+vi.stubGlobal("location", { replace: replaceMock });
+
 describe("LoginForm", () => {
   test("shows the login form fields", () => {
     render(<LoginForm />);

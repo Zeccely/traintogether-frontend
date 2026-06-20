@@ -1,10 +1,14 @@
 import { StakeAdding, StakeDTO } from "@/lib/types/stake";
 
-export async function getMyGroupStake(): Promise<StakeDTO> {
+export async function getMyGroupStake(): Promise<StakeDTO | null> {
   const response = await fetch("/api/stakes/my-group", {
     method: "GET",
     credentials: "include",
   });
+
+  if (response.status === 404) {
+    return null;
+  }
 
   if (!response.ok) {
     throw new Error(await response.text());

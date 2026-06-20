@@ -20,7 +20,7 @@ export default function LoginForm() {
     try {
       setLoginError(null);
       await login(data);
-      window.location.replace("/dashboard");
+      window.location.replace("/dashboard"); // does not allow user to go back to login
     } catch (error) {
       console.error(error);
       setLoginError("Login failed. Check your username and password.");
@@ -60,7 +60,7 @@ export default function LoginForm() {
               </p>
             ) : null}
 
-            {loginError && <p className="text-sm text-red-500">{loginError}</p>}
+            {loginError && <p className="text-sm text-destructive">{loginError}</p>}
 
             <Button type="submit">Log in</Button>
           </form>

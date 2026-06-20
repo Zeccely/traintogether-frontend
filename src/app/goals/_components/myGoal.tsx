@@ -77,7 +77,7 @@ export default function MyGoal({ goal, onDeleted }: MyGoalProps) {
       <ConfirmationWindow
         isOpen={isConfirmingEntryDeletion}
         title="Delete all entries?"
-        message="Deleting your goal will delete all entries. Do you still want to continue?"
+        message="Deleting your goal will also delete your entire workout history. Do you still want to continue?"
         isPending={isDeleting}
         confirmLabel="Delete goal and entries"
         onCancel={() => setIsConfirmingEntryDeletion(false)}
