@@ -32,6 +32,7 @@ e2e:
     - pnpm exec playwright install chromium
     - pnpm e2e
   after_script:
+    - docker compose -f compose.e2e.yaml logs --tail=200 backend
     - docker compose -f compose.e2e.yaml down
 
 publish:
