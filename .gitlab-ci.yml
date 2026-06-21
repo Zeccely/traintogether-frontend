@@ -32,7 +32,6 @@ e2e:
     - pnpm exec playwright install chromium
     - pnpm e2e
   after_script:
-    - docker compose -f compose.e2e.yaml logs --tail=200 backend
     - docker compose -f compose.e2e.yaml down
 
 publish:
@@ -41,6 +40,8 @@ publish:
     - echo "$DOCKERHUB_PATTOKEN" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
     - docker build -t zeccely/traintogether-frontend:latest .
     - docker push zeccely/traintogether-frontend:latest
+  only:
+    - main
 
 deploy:
   stage: deploy
